@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get("/home", function(){return view('home');});
+Route::any('/login', [LoginController::class,'showLogin'])->name('login');
+Route::post('/validateLogin',[LoginController::class,'login']);
 Route::get('/user/{id}', [UserController::class, 'show']);
