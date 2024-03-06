@@ -11,4 +11,13 @@ class Persona extends Model
     
     protected $table = 'Persona';
     protected $primaryKey = 'id_persona';
+    public $timestamps = false;
+    
+    protected $fillable = [
+		"Nombre",
+		"Apellido",
+		"Telefono",
+		"DNI",
+		"rela_usuario"
+    ];
 }
