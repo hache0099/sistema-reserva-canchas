@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -20,6 +20,7 @@ class User extends Authenticatable
      */
     protected $table = 'Usuario';
     protected $primaryKey = 'id_usuario';
+    public $timestamps = false;
     protected $fillable = [
         //~ 'name',
         'email',
@@ -43,10 +44,15 @@ class User extends Authenticatable
      */
     protected $casts = [
         //~ 'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'pass' => 'hashed',
     ];
     
     function persona() {
-		return $this->belongsTo(Persona::class, "rela_persona");
+		return $this->hasOne(Persona::class, "rela_usuario");
+	}
+	
+	function getAuthPassword()
+	{
+		return $this->pass;
 	}
 }
