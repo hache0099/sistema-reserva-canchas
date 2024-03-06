@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("/home", function(){return view('home');});
+Route::get("/home", function(){return view('home');})->name('home');
 Route::any('/login', [LoginController::class,'showLogin'])->name('login');
 Route::post('/validateLogin',[LoginController::class,'login']);
-Route::get('/user/{id}', [UserController::class, 'show']);
+Route::post('/validateRegister',[RegisterController::class,'validateRegister']);
+Route::get('/register',[RegisterController::class,'show'])->name('register');
+Route::get('/user/{id}', [UserController::class, 'show'])->middleware('auth');
