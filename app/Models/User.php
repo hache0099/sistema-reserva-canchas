@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -49,6 +50,11 @@ class User extends Authenticatable
     
     function persona() {
 		return $this->hasOne(Persona::class, "rela_usuario");
+	}
+	
+	function reservas()
+	{
+		return $this->hasMany(Reserva::class, "rela_usuario");
 	}
 	
 	function getAuthPassword()
