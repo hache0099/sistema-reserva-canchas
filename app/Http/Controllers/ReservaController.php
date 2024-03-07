@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reserva;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservaController extends Controller
 {
@@ -13,6 +14,11 @@ class ReservaController extends Controller
     public function index()
     {
         //
+        $user = Auth::user();
+        
+        $reservas = $user->reservas;
+        
+        return view('reserva.index', ['reservas' => $reservas]);
     }
 
     /**
