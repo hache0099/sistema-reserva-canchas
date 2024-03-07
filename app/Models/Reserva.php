@@ -11,6 +11,7 @@ class Reserva extends Model
 	protected $table = "Reserva";
 	
 	protected $primaryKey = "id_reserva";
+	public $timestamps = false;
     use HasFactory;
     
     function user()
