@@ -1,41 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-</head>
-<body>
+@extends('layout.loginlayout')
+@section('content')
+<div class='m-auto'>
     <h1>Registro</h1>
     <form method="POST" action="/validateRegister">
         @csrf
 		<h2>Usuario</h2>
         
-
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" required>
-
-        <label for="password_confirmation">Confirmar contraseña</label>
-        <input type="password" id="password_confirmation" name="password_confirmation" required>
-        
+		<div class='form-floating'>
+			<input class=form-control placeholder='name@example.com' type="email" id="email" name="email" required>
+			<label class=form-label  for="email">Correo electrónico</label>
+		</div>
+		
+		<div class='form-floating'>
+			<input class=form-control placeholder='password' type="password" id="password" name="password" required>
+			<label class=form-label for="password">Contraseña</label>
+		</div>
+		
+		<div class='form-floating'>
+			<input class=form-control placeholder='password' type="password" id="password_confirmation" name="password_confirmation" required>
+			<label class=form-label for="password_confirmation">Confirmar contraseña</label>
+        </div>
         <h2>Datos personales</h2>
         
-        <label for="name">Nombre</label>
-        <input type="text" id="name" name="name" required>
+        <div class='form-floating'>
+			<input class=form-control placeholder='nombre' type="text" id="name" name="name" required>
+			<label class=form-label for="name">Nombre</label>
+        </div>
         
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" required>
+        <div class='form-floating'>
+			<input class=form-control placeholder='apellido' type="text" id="apellido" name="apellido" required>
+			<label class=form-label for="apellido">Apellido</label>
+        </div>
         
-        <label for="dni">DNI</label>
-        <input type="number" id="dni" name="dni" required>
+        <div class='form-floating'>
+			<input class=form-control placeholder='dni' type="number" id="dni" name="dni" required>
+			<label form=form-label for="dni">DNI</label>
+        </div>
         
-        <label for="telefono">Teléfono</label>
-        <input type="number" id="telefono" name="telefono" required>
-
-        <button type="submit">Registrarse</button>
+        <div class='form-floating'>
+			<input class=form-control placeholder='telefono' type="number" id="telefono" name="telefono" required>
+			<label class=form-label for="telefono">Teléfono</label>
+		</div>
+		
+        <button class='btn btn-primary' type="submit">Registrarse</button>
     </form>
 
     @if ($errors->any())
@@ -45,5 +52,4 @@
             @endforeach
         </ul>
     @endif
-</body>
-</html>
+</div>
