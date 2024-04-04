@@ -3,7 +3,7 @@
 <!--
 <div class='d-flex align-items-center py-4 bg-body-tertiary'>
 -->
-	<div class='m-auto mw-25'>
+	<div class='m-auto mw-25 border rounded-3 p-5'>
 		<h1 class='h3 mb-3'>Login</h1>
 		@if ($errors->any())
 			<div class='alert alert-danger'>
@@ -26,6 +26,8 @@
 			</div>
 			<button class="btn btn-primary w-100 py-3" type="submit">Iniciar sesión</button>
 		</form>
+		
+		<a href="/register">Registrarse</a>
 	</div>
 <!--
 </div>
