@@ -1,6 +1,7 @@
 @extends('layout.loginlayout')
 @section('content')
-<div class='m-auto'>
+<div class='container p-5 bg-light text-dark'>
+<div class='p-3 border rounded-3' style='background-color: white; margin: 20%'>
     <h1>Registro</h1>
     <form method="POST" action="/validateRegister">
         @csrf
@@ -53,3 +54,5 @@
         </ul>
     @endif
 </div>
+</div>
+@endsection
