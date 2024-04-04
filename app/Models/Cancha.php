@@ -14,8 +14,13 @@ class Cancha extends Model
     protected $primaryKey = 'id_cancha';
     public $timestamps = false;
     
-    function tipocancha()
+    function tipocancha() : BelongsTo
     {
-		return $this->belongsTo(TipoCancha::class,'rela_cancha');
+		return $this->belongsTo(TipoCancha::class,'rela_TipoCancha');
 	}
+
+    function canchaestado() : BelongsTo
+    {
+      return $this->belongsTo(CanchaEstado::class,'rela_CanchaEstado');
+    }
 }
