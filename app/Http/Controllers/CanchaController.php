@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cancha;
+//use App\Models\CanchaEstado;
+//use App\Models\TipoCancha;
 use Illuminate\Http\Request;
 
 class CanchaController extends Controller
@@ -13,6 +15,9 @@ class CanchaController extends Controller
     public function index()
     {
         //
+        $canchas = Cancha::all();
+
+        return view('canchas',['canchas' => $canchas]);
     }
 
     /**
