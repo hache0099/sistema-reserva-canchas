@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CanchaController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +25,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function() {
 	Route::get("/home", function(){return view('home');})->name('home');
 	Route::get('/profile', [UserController::class, 'show']);
-	Route::get('/logout', [LoginController::class,'logout']);
+	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 	Route::get('/reservas', [ReservaController::class,'index']);
 });
 
@@ -31,4 +33,5 @@ Route::any('/login', [LoginController::class,'showLogin'])->name('login');
 Route::post('/validateLogin',[LoginController::class,'login']);
 Route::post('/validateRegister',[RegisterController::class,'validateRegister']);
 Route::get('/register',[RegisterController::class,'show'])->name('register');
+Route::get('/canchas',[CanchaController::class,'index'])->name('canchas');
 
