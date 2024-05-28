@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,9 @@ class UserController extends Controller
         $user = new User;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        
+        $user->fecha_alta = date("Ymd");
+        $user->rela_persona = $request->rela_persona;
+        $user->perfil = $request->rela_perfil;
     }
 
     /**
