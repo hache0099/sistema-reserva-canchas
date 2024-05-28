@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -25,7 +26,10 @@ class User extends Authenticatable
     protected $fillable = [
         //~ 'name',
         'email',
-        'pass',
+        'password',
+        'fecha_alta',
+        'rela_persona',
+        'rela_perfil'
     ];
 
     /**
@@ -34,7 +38,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'pass',
+        'password',
         //~ 'remember_token',
     ];
 
@@ -45,20 +49,25 @@ class User extends Authenticatable
      */
     protected $casts = [
         //~ 'email_verified_at' => 'datetime',
-        'pass' => 'hashed',
+        'password' => 'hashed',
     ];
     
     function persona() {
-		return $this->hasOne(Persona::class, "rela_usuario");
+		return $this->belongsTo(Persona::class, "rela_usuario");
 	}
 	
+    function perfil()
+    {
+        return $this->belongsTo(Perfil::class,'rela_perfil');
+    }
+
 	function reservas()
 	{
 		return $this->hasMany(Reserva::class, "rela_usuario");
 	}
-	
-	function getAuthPassword()
-	{
-		return $this->pass;
-	}
+
+    // function getAuthPassword()
+    // {
+    //     return $this->pass;
+    // }
 }
