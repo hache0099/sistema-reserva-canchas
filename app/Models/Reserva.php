@@ -14,14 +14,22 @@ class Reserva extends Model
 	protected $primaryKey = "id_reserva";
 	public $timestamps = false;
     use HasFactory;
+
+	protected $fillable = [
+		'Reserva_fecha',
+		'Reserva_hora',
+		'rela_ReservaEstado',
+		'rela_usuario',
+		'rela_cancha'
+	];
     
     function user()
     {
 		return $this->belongsTo(User::class, "rela_usuario");
 	}
 	
-	function detalleres()
+	function cancha()
 	{
-		return $this->hasMany(DetalleReserva::class, 'rela_reserva');
+		return $this->belongsTo(Cancha::class,'rela_cancha');
 	}
 }
