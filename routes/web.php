@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ChangePasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservaController;
@@ -27,6 +28,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('/profile', [UserController::class, 'show']);
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 	Route::get('/reservas', [ReservaController::class,'index']);
+	Route::get('/changePassword',[ChangePasswordController::class,'show']);
 });
 
 Route::any('/login', [LoginController::class,'showLogin'])->name('login');
