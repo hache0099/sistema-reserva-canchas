@@ -32,6 +32,18 @@
 			<input class=form-control placeholder='apellido' type="text" id="apellido" name="apellido" required>
 			<label class=form-label for="apellido">Apellido</label>
         </div>
+
+        <div class='form-floating'>
+			<input class=form-control placeholder='domicilio' type="text" id="domicilio" name="domicilio" required>
+			<label class=form-label for="domicilio">Domicilio</label>
+        </div>
+
+        <select class='form-select' id='tipodni' name='tipodni'>
+            <option selected>Tipo de Documento</option>
+            @foreach($tiposDocumento as $doc)
+                <option value='{{$doc->id_TipoDocumento}}'>{{$doc->TipoDocumento_desc}}</option>
+            @endforeach
+        </select>
         
         <div class='form-floating'>
 			<input class=form-control placeholder='dni' type="number" id="dni" name="dni" required>
@@ -42,6 +54,9 @@
 			<input class=form-control placeholder='telefono' type="number" id="telefono" name="telefono" required>
 			<label class=form-label for="telefono">Teléfono</label>
 		</div>
+
+        <input type='date' id='fechanac' name='fechanac'>
+        <label class=form-label for="fechanac">Fecha Nacimiento</label>
 		
         <button class='btn btn-primary' type="submit">Registrarse</button>
     </form>
