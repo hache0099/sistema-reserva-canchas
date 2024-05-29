@@ -38,7 +38,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->fecha_alta = date("Ymd");
         $user->rela_persona = $request->rela_persona;
-        $user->perfil = $request->rela_perfil;
+        $user->rela_perfil = $request->rela_perfil;
     }
 
     /**
