@@ -27,7 +27,10 @@ class ChangePasswordController extends Controller
 
         if($request->new_password != $request->new_password_confirmation)
         {
-            return back()->withErrors(['new_password' => 'Las contraseñas no coinciden']);
+            return back()->withErrors([
+                'new_password' => 'Las contraseñas no coinciden',
+                'new_password_confirmation' => 'Las contraseñas no coinciden',
+            ]);
         }
 
         if(!Hash::check($request->current_password, Auth::user()->password))
@@ -39,6 +42,6 @@ class ChangePasswordController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-
+        return back()-with('status', 'La contraseña ha sido cambiada con éxito');
     }
 }
