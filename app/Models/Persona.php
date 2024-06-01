@@ -18,4 +18,8 @@ class Persona extends Model
 		"Apellido",
 		"FechaNacimiento"
     ];
+
+    protected $casts = [
+      'FechaNacimiento' => 'date',
+    ];
 }
