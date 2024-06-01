@@ -84,7 +84,7 @@ class RegisterController extends Controller
 				'password' => $request->password,
 				'rela_persona' => $persona->id_persona,
 				'rela_perfil' => Perfil::where('Perfil_descripcion', 'Usuario')->value('idPerfil'),
-				'fecha_alta' => date('Ymd')
+				'fecha_alta' => date('Y-m-d')
 			]);
 			DB::commit();
 		} catch (Throwable $exception) {
