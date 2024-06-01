@@ -48,7 +48,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'fecha_alta' => 'date',
+        'fecha_alta' => 'datetime:Y-m-d',
         'password' => 'hashed',
     ];
     
