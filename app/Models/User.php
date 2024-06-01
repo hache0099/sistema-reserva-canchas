@@ -48,12 +48,12 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        //~ 'email_verified_at' => 'datetime',
+        'fecha_alta' => 'date',
         'password' => 'hashed',
     ];
     
     function persona() {
-		return $this->belongsTo(Persona::class, "rela_usuario");
+		return $this->belongsTo(Persona::class, "rela_persona");
 	}
 	
     function perfil()
