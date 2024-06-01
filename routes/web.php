@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 	Route::get('/reservas', [ReservaController::class,'index']);
 	Route::get('/changePassword',[ChangePasswordController::class,'show']);
+	Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
 });
 
 Route::any('/login', [LoginController::class,'showLogin'])->name('login');
