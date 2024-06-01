@@ -16,7 +16,7 @@ class PersonaContacto extends Model
     protected $fillable = [
         'PersonaContacto_desc',
         'rela_persona',
-        'rela_contacto'
+        'rela_tipocontacto',
     ];
 
     function persona()
