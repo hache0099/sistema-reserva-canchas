@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="/changePassword">
+                    <form method="POST" action="/validateChangePassword">
                         @csrf
 
                         <div class="form-group">
