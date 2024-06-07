@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 class Persona extends Model
 {
     use HasFactory;
@@ -22,4 +25,19 @@ class Persona extends Model
     protected $casts = [
       'FechaNacimiento' => 'date',
     ];
+
+    function personadocumento()
+    {
+      return $this->hasOne(PersonaDocumento::class, 'Persona_id_persona');
+    }
+
+    function domicilio()
+    {
+      return $this->hasOne(Domicilio::class, 'rela_persona');
+    }
+
+    function personacontacto()
+    {
+      return $this->hasMany(PersonaContacto::class, 'rela_persona');
+    }
 }
