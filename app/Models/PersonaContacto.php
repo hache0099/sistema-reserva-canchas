@@ -26,6 +26,6 @@ class PersonaContacto extends Model
 
     function tipocontacto()
     {
-        return $this->belongsTo(TipoContacto::class,'rela_contacto');
+        return $this->belongsTo(TipoContacto::class,'rela_tipocontacto');
     }
 }
