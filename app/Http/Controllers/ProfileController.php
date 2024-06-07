@@ -27,13 +27,16 @@ class ProfileController extends Controller
         }
         $dni = $persona->personadocumento->PersonaDocumento_desc;
 
-        $tipodni = TipoDocumento::where(
-            'id_TipoDocumento', 
-            $persona->personadocumento->TipoDocumento_id_TipoDocumento)
-            ->first()
-            ->TipoDocumento_desc;
-        
-        $telefono = PersonaContacto::where('rela_persona', $persona->id_persona)->first();
+        // $tipodni = TipoDocumento::where(
+        //     'id_TipoDocumento', 
+        //     $persona->personadocumento->TipoDocumento_id_TipoDocumento)
+        //     ->first()
+        //     ->TipoDocumento_desc;
+        $tipodni = $persona->personadocumento->tipodocumento->TipoDocumento_desc;
+        // $telefono = PersonaContacto::where('rela_persona', $persona->id_persona)
+        // ->first()
+        // ->PersonaContacto_desc;
+        $telefono = $persona->personacontacto->first()->PersonaContacto_desc;
 
         return view('user.profile')
             ->with('user',$user)
