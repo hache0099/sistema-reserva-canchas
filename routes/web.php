@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ChangePasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -25,7 +26,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function() {
 	Route::get("/home", function(){return view('home');})->name('home');
-	Route::get('/profile', [UserController::class, 'show']);
+	Route::get('/profile', [ProfileController::class, 'show']);
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 	Route::get('/reservas', [ReservaController::class,'index']);
 	Route::get('/changePassword',[ChangePasswordController::class,'show']);
