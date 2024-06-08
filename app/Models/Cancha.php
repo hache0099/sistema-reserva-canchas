@@ -14,6 +14,13 @@ class Cancha extends Model
     protected $primaryKey = 'id_cancha';
     public $timestamps = false;
     
+    protected $fillable = [
+      'Cancha_cantidad_max_personas',
+      'Cancha_precio_hora',
+      'rela_TipoCancha',
+      'rela_CanchaEstado',
+    ];
+
     function tipocancha() : BelongsTo
     {
 		return $this->belongsTo(TipoCancha::class,'rela_TipoCancha');
@@ -22,5 +29,10 @@ class Cancha extends Model
     function canchaestado() : BelongsTo
     {
       return $this->belongsTo(CanchaEstado::class,'rela_CanchaEstado');
+    }
+
+    function canchafoto()
+    {
+      return $this->hasMany(CanchaFoto::class,'Cancha_id_cancha');
     }
 }
