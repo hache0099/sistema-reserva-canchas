@@ -4,10 +4,12 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GestionController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CanchaController;
+use App\Http\Controllers\TipoCanchaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,12 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('/reservas', [ReservaController::class,'index']);
 	Route::get('/changePassword',[ChangePasswordController::class,'show']);
 	Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
+
+	Route::get('/gestion',[GestionController::class,'show']);
+	Route::prefix('gestion')->group(function () {
+		Route::get('/canchas',[CanchaController::class,'showGestion']);
+		Route::get('/tipos-cancha',[TipoCanchaController::class,'index']);
+	});
 });
 
 Route::any('/login', [LoginController::class,'showLogin'])->name('login');
