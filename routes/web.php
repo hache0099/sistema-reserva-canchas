@@ -27,6 +27,8 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function() {
 	Route::get("/home", function(){return view('home');})->name('home');
 	Route::get('/profile', [ProfileController::class, 'show']);
+	Route::get('/profile/editar', [ProfileController::class, 'edit']);
+	Route::post('/profile/actualizar', [ProfileController::class, 'update']);
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 	Route::get('/reservas', [ReservaController::class,'index']);
 	Route::get('/changePassword',[ChangePasswordController::class,'show']);
