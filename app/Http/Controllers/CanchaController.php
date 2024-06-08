@@ -20,6 +20,13 @@ class CanchaController extends Controller
         return view('canchas',['canchas' => $canchas]);
     }
 
+    function showGestion()
+    {
+        $canchas = Cancha::all();
+
+        return view('gestion.cancha.index',['canchas' => $canchas]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
