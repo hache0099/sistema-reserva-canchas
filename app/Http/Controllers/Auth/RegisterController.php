@@ -76,7 +76,8 @@ class RegisterController extends Controller
 			$persona_contacto = PersonaContacto::create([
 				'PersonaContacto_desc' => $request->telefono,
 				'rela_persona' => $persona->id_persona,
-				'rela_tipocontacto' => TipoContacto::where('Contacto_descripcion', 'Telefono')->first()->idContacto,
+				'rela_tipocontacto' => TipoContacto::where('Contacto_descripcion', 'Telefono')
+					->first()->idContacto,
 			]);
 			
 			$user = User::create([
