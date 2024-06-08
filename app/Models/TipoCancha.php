@@ -13,6 +13,10 @@ class TipoCancha extends Model
     protected $primaryKey = 'idTipoCancha';
     public $timestamps = false;
 
+    protected $fillable = [
+        'Material',
+    ];
+
     function cancha() : HasOne
     {
         return $this->hasOne(Cancha::class, 'rela_cancha');
