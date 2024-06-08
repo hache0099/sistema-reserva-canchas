@@ -12,45 +12,93 @@ use App\Models\Domicilio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class ProfileController extends Controller
 {
     //
 
-    function show()
+    private function obtenerInfoUsuario()
     {
         $user = User::find(Auth::user()->id_usuario);
         $persona = $user->persona;
         $domicilio = $persona->domicilio->Domicilio_detalle;
-        if(!$domicilio){
-            echo 'no valido';
-        }
         $dni = $persona->personadocumento->PersonaDocumento_desc;
-
-        // $tipodni = TipoDocumento::where(
-        //     'id_TipoDocumento', 
-        //     $persona->personadocumento->TipoDocumento_id_TipoDocumento)
-        //     ->first()
-        //     ->TipoDocumento_desc;
         $tipodni = $persona->personadocumento->tipodocumento->TipoDocumento_desc;
-        // $telefono = PersonaContacto::where('rela_persona', $persona->id_persona)
-        // ->first()
-        // ->PersonaContacto_desc;
         $telefono = $persona->personacontacto->first()->PersonaContacto_desc;
 
-        return view('user.profile')
-            ->with('user',$user)
-            ->with('persona',$persona)
-            ->with('tipodni', $tipodni)
-            ->with('dni', $dni)
-            ->with('domicilio', $domicilio)
-            ->with('telefono', $telefono)
-            ;
+        return array(
+            'user' => $user,
+            'persona' => $persona,
+            'domicilio' => $domicilio,
+            'dni' => $dni,
+            'tipodni' => $tipodni,
+            'telefono' => $telefono,
+        );
+    }
+
+    function show()
+    {
+        $infoUsuario = $this->obtenerInfoUsuario();
+
+        return view('user.profile', $infoUsuario);
     }
 
 
-    function updateProfile()
+    function update(Request $request)
     {
+        $request->validate([
+            'nombre' => 'required|string|max:45',
+			'apellido' => 'required|string|max:45',
+			'telefono' => 'required|numeric',
+			'tipodni' => 'required|numeric|min:1',
+			'dni' => 'required|numeric',
+			'domicilio' => 'required|max:100',
+			'fechanac' => 'required|date',
+        ]);
+        
+        try{
+        DB::beginTransaction();
+        $user = User::find(Auth::user()->id_usuario);
+        $persona = $user->persona;
+        $domicilio = $persona->domicilio;
+        $personadni = $persona->personadocumento;
+        $telefono = $persona->personacontacto->first();
+        
+        //$user->email = $request['email'];
+        $persona->Nombre = $request['nombre'];
+        $persona->Apellido = $request['apellido'];
+        $persona->FechaNacimiento = $request['fechanac'];
+        $persona->save();
+        
+        $domicilio->Domicilio_detalle = $request['domicilio'];
+        $domicilio->save();
 
+        $personadni->PersonaDocumento_desc = $request['dni'];
+        $personadni->TipoDocumento_id_Tipodocumento = $request['tipodni'];
+        $personadni->save();
+
+        $telefono->PersonaContacto_desc = $request['telefono'];
+        $telefono->save();
+
+        DB::commit();
+
+        return redirect('/profile')->with('status', 'Sus datos han sido modificados con éxito');
+
+        } catch (Throwable $e){
+            DB::rollBack();
+            return back()->withErrors('Error al actualizar: ' . $e)->withInput();
+        }
+    }
+
+    function edit(Request $request)
+    {
+        $infoUsuario = $this->obtenerInfoUsuario();
+        $tiposdni = TipoDocumento::all();
+
+        $infoUsuario['tiposdni'] = $tiposdni;
+
+        return view('user.editprofile', $infoUsuario);
     }
 }
