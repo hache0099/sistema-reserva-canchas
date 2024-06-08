@@ -39,6 +39,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('/gestion',[GestionController::class,'show']);
 	Route::prefix('gestion')->group(function () {
 		Route::get('/canchas',[CanchaController::class,'showGestion']);
+		Route::get('/canchas/create',[CanchaController::class,'create']);
+		Route::get('/canchas/{id}/editar',[CanchaController::class,'edit']);
+
 		Route::get('/tipos-cancha',[TipoCanchaController::class,'index']);
 	});
 });
