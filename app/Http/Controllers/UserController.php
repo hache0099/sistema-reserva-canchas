@@ -17,6 +17,9 @@ class UserController extends Controller
     public function index()
     {
         //
+
+        $usuarios = User::all();
+        return view('gestion.user.index', ['usuarios' => $usuarios]);
     }
 
     /**
