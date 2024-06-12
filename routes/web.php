@@ -10,6 +10,11 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CanchaController;
 use App\Http\Controllers\TipoCanchaController;
+use App\Http\Controllers\TipoDocumentoController;
+use App\Http\Controllers\TipoContactoController;
+use App\Http\Controllers\HorarioCanchaController;
+use App\Models\TipoContacto;
+use App\Models\TipoDocumento;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +46,24 @@ Route::middleware(['auth'])->group(function() {
 		Route::get('/canchas',[CanchaController::class,'showGestion']);
 		Route::get('/canchas/create',[CanchaController::class,'create']);
 		Route::get('/canchas/{id}/editar',[CanchaController::class,'edit']);
+
+		Route::get('/tipos-documento', [TipoDocumentoController::class,'index']);
+		Route::get('/tipos-documento/create',[TipoDocumentoController::class,'create']);
+		Route::post('/tipos-documento/store',[TipoDocumentoController::class,'store']);
+		Route::get('/tipos-documento/{id}/editar',[TipoDocumentoController::class,'edit']);
+		Route::post('/tipos-documento/{id}/update',[TipoDocumentoController::class,'update']);
+
+		Route::get('/tipos-contacto',[TipoContactoController::class,'index']);
+		Route::get('/tipos-contacto/create',[TipoContactoController::class,'create']);
+		Route::post('/tipos-contacto/store',[TipoContactoController::class,'store']);
+		Route::get('/tipos-contacto/{id}/editar',[TipoContactoController::class,'edit']);
+		Route::post('/tipos-contacto/{id}/update',[TipoContactoController::class,'update']);
+
+		Route::get('/horarios-canchas', [HorarioCanchaController::class, 'index']);
+		Route::get('/horarios-cancha/create', [HorarioCanchaController::class, 'create']);
+		Route::post('/horarios-cancha/store', [HorarioCanchaController::class, 'store']);
+		Route::get('/horarios-cancha/{id}/editar', [HorarioCanchaController::class, 'edit']);
+		Route::post('/horarios-cancha/{id}/update', [HorarioCanchaController::class, 'update']);
 
 		Route::get('/tipos-cancha',[TipoCanchaController::class,'index']);
 	});
