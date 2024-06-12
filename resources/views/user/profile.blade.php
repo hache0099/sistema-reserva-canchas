@@ -18,5 +18,6 @@
 	<p>Domicilio: {{ $domicilio }}</p>
 
 	<a href='/profile/editar' role='button' class='btn btn-primary'>Editar Perfil</a>
+	<a href='/changePassword' role='button' class='btn btn-primary'>Cambiar contraseña</a>
 </div>
 @endsection
