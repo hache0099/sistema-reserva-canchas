@@ -26,9 +26,13 @@
 							<li><a class="dropdown-item" href="/Proyecto/reporte/horas-mas-res.php">Horas mas reservadas</a></li>
 						</ul>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" href='/gestion/'>Gestión</a>
+					</li>
 					<li class="nav-item ms-5">
 						<a class="nav-link" href={{route("logout")}}>Cerrar sesión</a>
 					</li>
+					
 				</ul>
 <!--
 				<div class="d-flex">
