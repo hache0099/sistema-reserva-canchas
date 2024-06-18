@@ -15,6 +15,7 @@ class TipoCancha extends Model
 
     protected $fillable = [
         'Material',
+        'estado',
     ];
 
     function cancha() : HasOne
