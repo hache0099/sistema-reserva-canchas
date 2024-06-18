@@ -92,7 +92,7 @@ class ProfileController extends Controller
         }
     }
 
-    function edit(Request $request)
+    function edit()
     {
         $infoUsuario = $this->obtenerInfoUsuario();
         $tiposdni = TipoDocumento::all();
