@@ -2,6 +2,12 @@
 @section('content')
 <div class="container my-4">
     <h1>Gestión de Canchas</h1>
+    <!-- Aviso de modificación exitosa -->
+    @if(session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
     <table class="table table-bordered mt-4">
         <thead>
             <tr>
