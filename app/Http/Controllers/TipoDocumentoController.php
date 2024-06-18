@@ -56,6 +56,24 @@ class TipoDocumentoController extends Controller
             'TipoDocumento_desc' => 'required|string',
         ]);
 
-        
+        TipoDocumento::create($request->all());
+
+        return redirect('/gestion/tipos-documento')->with('status', 'Se ha creado con éxito');
+    }
+
+    function delete($id_tipodoc)
+    {
+        $tipoDoc = TipoDocumento::find($id_tipodoc);
+        $tipoDoc->estado = 0;
+        $tipoDoc->save();
+
+        return redirect('gestion.tipodoc.index')->with('status', 'Se ha borrado con éxito');
+    }
+
+    function restore($id_tipodoc)
+    {
+        $tipoDoc = TipoDocumento::find($id_tipodoc);
+        $tipoDoc->estado = 1;
+        $tipoDoc->save();
     }
 }
