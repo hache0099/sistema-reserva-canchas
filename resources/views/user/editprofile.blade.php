@@ -49,17 +49,17 @@
 
         <div class="form-group">
             <label for="dni">DNI:</label>
-            <input type="text" class="form-control" id="dni" name="dni" value="{{ $dni }}" required>
+            <input type="number" class="form-control" id="dni" name="dni" value="{{ $dni }}" required>
         </div>
 
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="email">Correo:</label>
             <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
-        </div>
+        </div> --}}
 
         <div class="form-group">
             <label for="telefono">Teléfono:</label>
-            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $telefono }}" required>
+            <input type="number" class="form-control" id="telefono" name="telefono" value="{{ $telefono }}" required>
         </div>
 
         <div class="form-group">
@@ -69,6 +69,7 @@
 
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     </form>
+        <a href="/profile" class="btn btn-danger">Cancelar</a>
 </div>
 
 @endsection
