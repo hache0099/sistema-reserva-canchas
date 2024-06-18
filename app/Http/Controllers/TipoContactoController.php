@@ -63,4 +63,22 @@ class TipoContactoController extends Controller
         return redirect('/gestion/tipos-contacto')->with('status','Se ha creado con exito');
 
     }
+
+    function delete($idTipoContacto)
+    {
+        $tipoContacto = TipoContacto::find($idTipoContacto);
+        $tipoContacto->estado = 0;
+        $tipoContacto->save();
+
+        return redirect('/gestion/tipos-contacto')->with('status','Se ha borrado con exito');
+    }
+
+    function restore($idTipoContacto)
+    {
+        $tipoContacto = TipoContacto::find($idTipoContacto);
+        $tipoContacto->estado = 1;
+        $tipoContacto->save();
+
+        return redirect('/gestion/tipos-contacto')->with('status','Se ha restaurado con exito');
+    }
 }
