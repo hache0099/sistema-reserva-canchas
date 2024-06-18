@@ -13,6 +13,7 @@ class TipoDocumento extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'TipoDocumento_desc'
+        'TipoDocumento_desc',
+        'estado',
     ];
 }
