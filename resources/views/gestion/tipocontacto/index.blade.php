@@ -28,12 +28,27 @@
                     <td>{{ $contacto->obligatorio == 1 ? 'Sí' : 'No' }}</td>
                     <td>
                         <a href="/gestion/tipos-contacto/{{ $contacto->idContacto }}/editar" class="btn btn-warning btn-sm">Editar</a>
+                         <button 
+                            class="btn btn-{{ $contacto->estado == 1 ? "danger" : "success" }} btn-sm"
+                            onclick="confirmChange('tipos-contacto',{{ $contacto->idContacto}},{{ $contacto->estado }});">
+                            {{ $contacto->estado == 1 ? "Eliminar" : "Restaurar" }}
+                        </button>
                     </td>
+
                 </tr>
                 @endforeach
             </tbody>
         </table>
         <a href="/tipos-contacto/create" class="btn btn-primary">Añadir Nuevo Tipo de Contacto</a>
     </div>
+<script>
+    function confirmChange(elemento, id, toDelete) {
+        let str = toDelete == 1 ? "borrar" : "restaurar";
+        let finUrl = toDelete == 1 ? "delete" : "restore";
+        if (confirm('¿Estás seguro de que deseas ' + str +' este elemento?')) {
+            window.location.href = `/gestion/${elemento}/${id}/${finUrl}`;
+        }
+    }
+</script>
 @endsection
 
