@@ -14,6 +14,7 @@ class TipoContacto extends Model
 
     protected $fillable = [
         'Contacto_descripcion',
-        'obligatorio'
+        'obligatorio',
+        'estado',
     ];
 }
