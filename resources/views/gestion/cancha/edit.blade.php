@@ -2,7 +2,7 @@
 @section('content')
 <div class="container my-4">
     <h1>Editar Cancha {{ $cancha->id_cancha }}</h1>
-    <form action="/gestion/canchas/{{ $cancha->id_cancha }}/actualizar" method="post">
+    <form action="/gestion/canchas/{{ $cancha->id_cancha }}/update" method="post">
         @csrf
 
         {{-- <div class="form-group">
