@@ -94,6 +94,17 @@ class CanchaController extends Controller
     public function update(Request $request, $id_cancha)
     {
         //
+        $request->validate([
+            'Cancha_cantidad_max_personas' => 'required|numeric|min:1',
+            'Cancha_precio_hora' => 'required|numeric|min:1',
+            'rela_tipocancha' => 'required|numeric|min:1',
+        ]);
+
+        $cancha = Cancha::find($id_cancha);
+
+        $cancha->update($request->all());
+
+        return redirect('/gestion/canchas/')->with('status', 'Se ha actualizado con éxito');
     }
 
     /**
