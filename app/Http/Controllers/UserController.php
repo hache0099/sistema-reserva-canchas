@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Perfil;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,8 @@ class UserController extends Controller
         //
 
         $usuarios = User::all();
-        return view('gestion.user.index', ['usuarios' => $usuarios]);
+        // $perfiles = Perfil::all();
+        return view('gestion.users.index', ['usuarios' => $usuarios]);
     }
 
     /**
@@ -66,12 +68,35 @@ class UserController extends Controller
         //
     }
 
+    function editPermisos($id_usuario)
+    {
+        $user = User::find($id_usuario);
+        $perfiles = Perfil::all();
+
+        return view('gestion.users.edit', ['usuario' => $user, 'perfiles' => $perfiles]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
     {
         //
+    }
+
+    function updatePermisos(Request $request,$id_usuario)
+    {
+        $request->validate([
+            'rela_perfil' => 'required|int|min:1'
+        ]);
+
+        $user = User::find($id_usuario);
+        $user->rela_perfil = $request['rela_perfil'];
+
+        $user->save();
+
+        return redirect('/gestion/usuarios')->with('status', 'Se ha actualizado con éxito');
+
     }
 
     /**
