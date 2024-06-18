@@ -30,6 +30,18 @@
             </ul>
         </div>
     </div>
+
+    <div class="card my-3">
+        <div class="card-header">
+            Gestión Reservas
+        </div>
+        <div class="card-body">
+            <ul>
+                <li><a href="/gestion/metodos-pago">Metodos de Pago</a></li>
+
+            </ul>
+        </div>
+    </div>
 </div>
 @endsection
 
