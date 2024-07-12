@@ -17,4 +17,9 @@ class Modulo extends Model
         'Modulo_descripcion',
         'Modulo_ruta'
     ];
+
+    function perfilmodulo()
+    {
+        return $this->hasMany(PerfilModulo::class,'Modulo_idModulo');
+    }
 }
