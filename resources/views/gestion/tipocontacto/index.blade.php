@@ -16,6 +16,7 @@
                     <th>ID Contacto</th>
                     <th>Descripción del Contacto</th>
                     <th>Obligatorio</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                     <td>{{ $contacto->idContacto }}</td>
                     <td>{{ $contacto->Contacto_descripcion }}</td>
                     <td>{{ $contacto->obligatorio == 1 ? 'Sí' : 'No' }}</td>
+                    <td>{{ $contacto->estado == 1 ? 'Habilitado' : 'Deshabilitado' }}</td>
                     <td>
                         <a href="/gestion/tipos-contacto/{{ $contacto->idContacto }}/editar" class="btn btn-warning btn-sm">Editar</a>
                          <button 
