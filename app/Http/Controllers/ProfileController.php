@@ -9,6 +9,7 @@ use App\Models\TipoContacto;
 use App\Models\PersonaContacto;
 use App\Models\PersonaDocumento;
 use App\Models\Domicilio;
+use App\Models\TipoDomicilio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -24,14 +25,17 @@ class ProfileController extends Controller
         $user = User::find(Auth::user()->id_usuario);
         $persona = $user->persona;
         $domicilio = $persona->domicilio->Domicilio_detalle;
+        $tipoDomicilio = $persona->domicilio->tipodomicilio->TipoDomicilio_desc;
         $dni = $persona->personadocumento->PersonaDocumento_desc;
         $tipodni = $persona->personadocumento->tipodocumento->TipoDocumento_desc;
         $telefono = $persona->personacontacto->first()->PersonaContacto_desc;
+        
 
         return array(
             'user' => $user,
             'persona' => $persona,
             'domicilio' => $domicilio,
+            'tipodomicilio' => $tipoDomicilio,
             'dni' => $dni,
             'tipodni' => $tipodni,
             'telefono' => $telefono,
@@ -56,6 +60,7 @@ class ProfileController extends Controller
 			'dni' => 'required|numeric',
 			'domicilio' => 'required|max:100',
 			'fechanac' => 'required|date',
+            'tipodomicilio' => 'numeric|min:1',
         ]);
         
         try{
@@ -73,7 +78,10 @@ class ProfileController extends Controller
         $persona->save();
         
         $domicilio->Domicilio_detalle = $request['domicilio'];
+        $domicilio->rela_tipodomicilio = $request['tipodomicilio'];
         $domicilio->save();
+
+        
 
         $personadni->PersonaDocumento_desc = $request['dni'];
         $personadni->TipoDocumento_id_Tipodocumento = $request['tipodni'];
@@ -96,8 +104,10 @@ class ProfileController extends Controller
     {
         $infoUsuario = $this->obtenerInfoUsuario();
         $tiposdni = TipoDocumento::all();
+        $tiposdomicilio = TipoDomicilio::all();
 
         $infoUsuario['tiposdni'] = $tiposdni;
+        $infoUsuario['tiposdomicilio'] = $tiposdomicilio;
 
         return view('user.editprofile', $infoUsuario);
     }
