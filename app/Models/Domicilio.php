@@ -22,4 +22,9 @@ class Domicilio extends Model
     {
         return $this->belongsTo(Persona::class,'rela_persona');
     }
+
+    function tipodomicilio()
+    {
+        return $this->belongsTo(TipoDomicilio::class,'rela_tipodomicilio');
+    }
 }
