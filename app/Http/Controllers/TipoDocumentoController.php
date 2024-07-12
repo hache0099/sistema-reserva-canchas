@@ -67,7 +67,7 @@ class TipoDocumentoController extends Controller
         $tipoDoc->estado = 0;
         $tipoDoc->save();
 
-        return redirect('gestion.tipodoc.index')->with('status', 'Se ha borrado con éxito');
+        return redirect('/gestion/tipos-documento')->with('status', 'Se ha borrado con éxito');
     }
 
     function restore($id_tipodoc)
@@ -75,5 +75,7 @@ class TipoDocumentoController extends Controller
         $tipoDoc = TipoDocumento::find($id_tipodoc);
         $tipoDoc->estado = 1;
         $tipoDoc->save();
+
+        return redirect('/gestion/tipos-documento')->with('status', 'Se ha restaurado con éxito');
     }
 }
