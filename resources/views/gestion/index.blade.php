@@ -13,6 +13,7 @@
                 <li><a href="/gestion/tipos-contacto">Tipos de Contacto</a></li>
                 <li><a href="/gestion/tipos-documento">Tipos de Documento</a></li>
                 <li><a href="/gestion/perfiles">Perfiles</a></li>
+                <li><a href="/gestion/tipos-domicilio">Tipos Domicilio</a></li>
             </ul>
         </div>
     </div>
@@ -38,7 +39,7 @@
         <div class="card-body">
             <ul>
                 <li><a href="/gestion/metodos-pago">Metodos de Pago</a></li>
-
+				<li><a href="/gestion/tipos-pago">Tipos de Pago</a></li>
             </ul>
         </div>
     </div>
