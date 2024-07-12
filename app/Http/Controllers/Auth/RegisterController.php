@@ -44,6 +44,11 @@ class RegisterController extends Controller
 			'fechanac' => 'required|date',
 		]);
 		
+		if(User::find($request['email'])->exists())
+		{
+			return back()->withErrors(['email' => 'El correo ya está en uso']);
+		}
+
 		if ($request->password != $request->password_confirmation)
 		{
 			return back()->withErrors(['password_confirmation' => 'Las contraseñas no coinciden.']);
@@ -68,7 +73,7 @@ class RegisterController extends Controller
 			]);
 
 			$persona_doc = PersonaDocumento::create([
-				'PesonaDocumento_desc' => $request->dni,
+				'PesonaDocumento_desc' => $request['dni'],
 				'Persona_id_persona' => $persona->id_persona,
 				'TipoDocumento_id_TipoDocumento' => $request->tipodni,
 			]);
