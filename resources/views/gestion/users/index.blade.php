@@ -25,5 +25,6 @@
             @endforeach
         </tbody>
     </table>
+    {{$usuarios->links()}}
 </div>
 @endsection
