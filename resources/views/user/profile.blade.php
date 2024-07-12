@@ -17,6 +17,7 @@
 	
 	<p>Telefono: {{ $telefono }}</p>
 	<p>Domicilio: {{ $domicilio }}</p>
+	<p>Tipo de Domicilio: {{$tipodomicilio}}</p>
 
 	<a href='/profile/editar' role='button' class='btn btn-primary'>Editar Perfil</a>
 	<a href='/changePassword' role='button' class='btn btn-primary'>Cambiar contraseña</a>

@@ -67,6 +67,20 @@
             <input type="text" class="form-control" id="domicilio" name="domicilio" value="{{ $domicilio }}" required>
         </div>
 
+        <div class="form-group">
+            <label for="tipodni">Tipo Domicilio:</label>
+            <select class="form-select" id="tipodomicilio" name="tipodomicilio" required>
+                @foreach($tiposdomicilio as $tipo)
+                    <option 
+                        value="{{ $tipo->idTipoDomicilio }}" 
+                        {{ $tipo->TipoDomicilio_desc == $tipodomicilio ? 'selected' : '' }}
+                    >
+                    {{ $tipo->TipoDomicilio_desc }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     </form>
         <a href="/profile" class="btn btn-danger">Cancelar</a>
