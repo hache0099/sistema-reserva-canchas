@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Modulo;
+use App\Models\PerfilModulo;
 
 class CheckUserAccess
 {
@@ -15,19 +16,20 @@ class CheckUserAccess
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $route): Response
+    public function handle(Request $request, Closure $next,): Response
     {
         $user = Auth::user();
-
+        $route2 = '/' . $request->path() . '/';
+        // echo $route2;
         $user_perfil = $user->perfil;
+        $perfilesModulos = $user_perfil->perfilmodulo->pluck('Modulo_idModulo')->toArray();
 
-        // $hasAccess = $user_perfil->perfilmodulo->modulo->where('Modelo_ruta', $route)->exists();
+        $modulos = Modulo::whereIn('idModulo',$perfilesModulos);
 
-        $hasAccess = Modulo::where('ruta', $route)
-        ->whereHas('perfiles', function ($query) use ($user_perfil) {
-            $query->where('Perfil_descripcion', $user_perfil->Perfil_descripcion);
-        })
-        ->exists();
+
+        $hasAccess = !empty(array_filter($modulos->pluck('Modulo_ruta')->toArray(), 
+            function($ruta) use($route2){return fnmatch($ruta,$route2);}));
+        
 
         if(!$hasAccess){
             return response('No autorizado',403);
