@@ -11,5 +11,6 @@
 		@yield('content')
 		{{-- @include('layout.partials.footer') --}}
 		@include('layout.partials.footer-scripts')
+		@yield('custom-scripts')
 	</body>
 </html>
