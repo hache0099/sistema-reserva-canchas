@@ -19,7 +19,8 @@ class UserController extends Controller
     {
         //
 
-        $usuarios = User::all();
+        $usuarios = User::paginate(5);;
+        
         // $perfiles = Perfil::all();
         return view('gestion.users.index', ['usuarios' => $usuarios]);
     }
