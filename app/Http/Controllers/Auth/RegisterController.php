@@ -44,18 +44,19 @@ class RegisterController extends Controller
 			'fechanac' => 'required|date',
 		]);
 		
-		if(User::find($request['email'])->exists())
+		if(User::where('email',$request->email)->exists())
 		{
-			return back()->withErrors(['email' => 'El correo ya está en uso']);
+			echo $request->email;
+			return back()->withErrors(['email' => 'El correo ya está en uso'])->withInput();
 		}
 
 		if ($request->password != $request->password_confirmation)
 		{
-			return back()->withErrors(['password_confirmation' => 'Las contraseñas no coinciden.']);
+			return back()->withErrors(['password_confirmation' => 'Las contraseñas no coinciden.'])->withInput();
 		}
 
 		if ($request->tipodni < 1){
-			return back()->withErrors(['tipodni' => 'Escoja un tipo de DNI']);
+			return back()->withErrors(['tipodni' => 'Escoja un tipo de DNI'])->withInput();
 		}
 		
 		try {
@@ -73,7 +74,7 @@ class RegisterController extends Controller
 			]);
 
 			$persona_doc = PersonaDocumento::create([
-				'PesonaDocumento_desc' => $request['dni'],
+				'PersonaDocumento_desc' => $request->dni,
 				'Persona_id_persona' => $persona->id_persona,
 				'TipoDocumento_id_TipoDocumento' => $request->tipodni,
 			]);
