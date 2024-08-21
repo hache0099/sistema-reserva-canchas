@@ -12,25 +12,32 @@ class PerfilController extends Controller
 
     function show()
     {
-        $perfiles = Perfil::all();
-        $perfilmodulo = PerfilModulo::all();
-        //$modulo = Modulo::all();
+        $perfiles = Perfil::with('perfilmodulo')->get();
 
-        $perfilesConModulos = array();
-
-        foreach($perfiles as $p)
-        {
-            $ids = $p->perfilmodulo->pluck('Modulo_idModulo')->toArray();
-            $perfilesConModulos[$p] = Modulo::whereIn('idModulo',$ids);
-        }
-
-        return view('gestion.perfil.index',['perfiles' => $perfilesConModulos]);
+        return view('gestion.perfil.index',compact('perfiles'));
     }
 
     function edit($id_perfil)
     {
         $perfil = Perfil::find($id_perfil);
+        $modulo = Modulo::all();
+        $perfilmodulo = PerfilModulo::where('Perfil_idPerfil', $perfil->idPerfil)->pluck('Modulo_idModulo')->toArray();
 
-        return view('gestion.perfil.edit',['perfil' => $perfil]);
+        return view('gestion.perfil.edit',compact('perfil', 'modulo','perfilmodulo'));
+    }
+
+    function update(Request $request, $idPerfil)
+    {
+        $request->validate([
+            'Perfil_descripcion' => 'required|string',
+            'perfilmodulo' => 'required|array',
+        ]);
+
+        $perfil = Perfil::find($idPerfil);
+
+        PerfilModulo::destroy($perfil->perfilmodulo->modelKeys());
+
+        //TODO: terminar la actualizacion de los modulos
+
     }
 }
