@@ -6,12 +6,14 @@
 		<ul>
 			
 			@if (count($reservas) > 0)
+				<ul>
 				@foreach($reservas as $reserva)
-					<li> {{ $reserva->Reserva_fecha }}
+					<li>{{$reserva->rela_cancha}} - {{ $reserva->Reserva_fecha }} - {{$reserva->Reserva_hora}}:00
 				@endforeach
+				</ul>
 			@else
 				<h3>No hay reservas pendientes</h3>
-				<a href='/reservas/nueva'>Nueva reserva</a>
+				<a href={{route('reserva.create')}}>Nueva reserva</a>
 			@endif
 		</ul>
 	</div>
