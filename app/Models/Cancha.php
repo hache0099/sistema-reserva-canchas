@@ -35,4 +35,9 @@ class Cancha extends Model
     {
       return $this->hasMany(CanchaFoto::class,'Cancha_id_cancha');
     }
+
+    function canchahorario()
+    {
+      return $this->hasOne(HorarioCancha::class,'rela_cancha');
+    }
 }
