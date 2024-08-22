@@ -42,9 +42,15 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('/profile/editar', [ProfileController::class, 'edit']);
 	Route::post('/profile/actualizar', [ProfileController::class, 'update']);
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
-	Route::get('/reservas', [ReservaController::class,'index']);
+	
 	Route::get('/changePassword',[ChangePasswordController::class,'show']);
 	Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
+
+
+	Route::get('/reserva/getHorasDisponibles',[ReservaController::class,'obtenerHorasDisponibles'])
+		->name('reserva.getHorasDisponibles');
+	Route::resource('reserva',ReservaController::class);
+	
 
 	
 	// Route::middleware(['check.access'])->group(function(){
