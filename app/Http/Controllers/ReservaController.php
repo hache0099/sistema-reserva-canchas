@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reserva;
 use App\Models\Cancha;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,11 @@ class ReservaController extends Controller
         //
         $user = Auth::user();
         
-        $reservas = $user->reservas;
+        $reservas = $user->reservas->reject(function ($reserva){
+            return (($reserva->Reserva_fecha < date('Y-m-d')) && 
+                   ($reserva->Reserva_hora > date('H'))) ||
+                   ($reserva->reservaestado->ReservaEstado_descripcion == "Cancelada"); 
+        });
         
         return view('reserva.index', ['reservas' => $reservas]);
     }
@@ -69,6 +74,17 @@ class ReservaController extends Controller
     public function edit(Reserva $reserva)
     {
         //
+        $userPerfil = User::find(Auth::user()->id_usuario)->perfil->Perfil_descripcion;
+
+        if ($userPerfil === "Usuario"){
+            if ($reserva->user->id_usuario != Auth::user()->id_usuario){
+                return response('No Autorizado', 403);
+            }
+        }
+
+        $canchas = Cancha::all();
+
+        return view('reserva.edit', compact('reserva','canchas'));
     }
 
     /**
@@ -77,6 +93,21 @@ class ReservaController extends Controller
     public function update(Request $request, Reserva $reserva)
     {
         //
+        echo "no funca";
+        $request->validate([
+            'id_cancha' => 'required|int',
+            'fecha' => 'required|date',
+            'hora' => 'required|int',
+            // 'id_usuario' => 'int',
+        ]);
+
+        $reserva->rela_cancha = $request->id_cancha;
+        $reserva->Reserva_fecha = $request->fecha;
+        $reserva->Reserva_hora = $request->hora;
+
+        $reserva->save();
+
+        return redirect()->route('reserva.index');
     }
 
     /**
@@ -109,9 +140,14 @@ class ReservaController extends Controller
             $horasCancha->push($hora);
         }
 
-        $horasOcupadas = Reserva::where('Reserva_fecha',$fecha)->pluck('Reserva_hora');
+        $horasOcupadas = Reserva::where('Reserva_fecha',$fecha)
+            ->get()
+            ->reject(function ($reserva) {
+                return $reserva->reservaestado->ReservaEstado_descripcion == "Cancelada";
+            })
+            ->pluck('Reserva_hora');
         $horasDisponibles = $horasCancha->diff($horasOcupadas);
 
-        return json_encode($horasDisponibles->toArray());
+        return json_encode(array_values($horasDisponibles->toArray()));
     }
 }
