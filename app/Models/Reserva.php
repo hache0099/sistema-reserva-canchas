@@ -22,6 +22,10 @@ class Reserva extends Model
 		'rela_usuario',
 		'rela_cancha'
 	];
+
+	protected $casts = [
+		'Reserva_fecha' => 'date:Y-m-d',
+	];
     
     function user()
     {
@@ -31,5 +35,10 @@ class Reserva extends Model
 	function cancha()
 	{
 		return $this->belongsTo(Cancha::class,'rela_cancha');
+	}
+
+	function reservaestado()
+	{
+		return $this->belongsTo(ReservaEstado::class,'rela_ReservaEstado');
 	}
 }
