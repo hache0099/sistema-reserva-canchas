@@ -19,16 +19,18 @@ class CheckUserAccess
     public function handle(Request $request, Closure $next,): Response
     {
         $user = Auth::user();
-        $route2 = '/' . $request->path() . '/';
-        // echo $route2;
+        $route = '/' . $request->path() . '/';
         $user_perfil = $user->perfil;
         $perfilesModulos = $user_perfil->perfilmodulo->pluck('Modulo_idModulo')->toArray();
 
         $modulos = Modulo::whereIn('idModulo',$perfilesModulos);
 
 
-        $hasAccess = !empty(array_filter($modulos->pluck('Modulo_ruta')->toArray(), 
-            function($ruta) use($route2){return fnmatch($ruta,$route2);}));
+        $hasAccess = !empty(array_filter(
+            $modulos->pluck('Modulo_ruta')->toArray(), 
+            function($ruta) use($route){return fnmatch($ruta,$route);}
+            )
+        );
         
 
         if(!$hasAccess){
