@@ -11,10 +11,10 @@
 						<a class="nav-link" href="/profile">Mi perfil</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/reservas">Mis reservas</a>
+						<a class="nav-link" href={{route("reserva.index")}}>Mis reservas</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/Proyecto/reserva/nueva_reserva.php">Nueva reserva</a>
+						<a class="nav-link" href={{route("reserva.create")}}>Nueva reserva</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/canchas/">Canchas</a>
