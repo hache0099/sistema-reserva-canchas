@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
     <h1>Editar Perfil</h1>
-    <form action="/profile/actualizar" method="post">
+    <form action={{isset($tiposperfil) ? "/gestion/usuarios/$user->id_usuario/update" : "/profile/actualizar"}} method="post">
         @csrf
 
         @if($errors->any())
@@ -11,6 +11,20 @@
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
+        @endif
+
+        @if($user->perfil->Perfil_descripcion != "Usuario")
+            @if($user->id_usuario != Auth::user()->id_usuario)
+                <input type="hidden" name="editarOtroUsuario" value=1>
+                <input type="hidden" name="id_usuario" value={{$user->id_usuario}}>
+            @endif
+            <select class="form-select" id="perfil" name="perfil">
+                @foreach($tiposperfil as $perfil)
+                    <option value={{$perfil->idPerfil}} {{$perfil->idPerfil === $user->perfil->idPerfil ? "selected" : ""}}>
+                    {{$perfil->Perfil_descripcion}}
+                    </option>
+                @endforeach
+            </select>
         @endif
         <div class="form-group">
             <label for="nombre">Nombre:</label>
@@ -59,7 +73,7 @@
 
         <div class="form-group">
             <label for="telefono">Teléfono:</label>
-            <input type="number" class="form-control" id="telefono" name="telefono" value="{{ $telefono }}" required>
+            <input type="text" class="form-control" id="telefono" name="telefono" value="{{ $telefono }}" required>
         </div>
 
         <div class="form-group">
