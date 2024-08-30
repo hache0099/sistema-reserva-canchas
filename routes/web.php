@@ -62,8 +62,8 @@ Route::middleware(['auth'])->group(function() {
 
 
 			Route::get('/usuarios', [UserController::class,'index']);
-			Route::get('/usuarios/{id}/editar', [UserController::class,'editPermisos']);
-			Route::post('/usuarios/{id}/updatePermisos', [UserController::class,'updatePermisos']);
+			Route::get('/usuarios/{id}/editar', [ProfileController::class,'edit']);
+			Route::post('/usuarios/{id}/update', [ProfileController::class,'update']);
 
 			Route::get('/canchas',[CanchaController::class,'showGestion']);
 			Route::get('/canchas/create',[CanchaController::class,'create']);
