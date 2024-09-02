@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reserva;
 use App\Models\Cancha;
 use App\Models\User;
+use App\Models\PersonaDocumento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,14 +18,15 @@ class ReservaController extends Controller
     {
         //
         $user = Auth::user();
-        
-        $reservas = $user->reservas->reject(function ($reserva){
-            return (($reserva->Reserva_fecha < date('Y-m-d')) && 
-                   ($reserva->Reserva_hora > date('H'))) ||
-                   ($reserva->reservaestado->ReservaEstado_descripcion == "Cancelada"); 
+
+        $reservas = $user->reservas->reject(function ($reserva) {
+            return ($reserva->Reserva_fecha < date("Y-m-d") &&
+                $reserva->Reserva_hora > date("H")) ||
+                $reserva->reservaestado->ReservaEstado_descripcion ==
+                    "Cancelada";
         });
-        
-        return view('reserva.index', ['reservas' => $reservas]);
+
+        return view("reserva.index", ["reservas" => $reservas]);
     }
 
     /**
@@ -33,8 +35,9 @@ class ReservaController extends Controller
     public function create()
     {
         $canchas = Cancha::all();
-
-        return view('reserva.create', compact('canchas'));
+        $user_perfil = User::find(Auth::user()->id_usuario)->perfil
+            ->Perfil_descripcion;
+        return view("reserva.create", compact("canchas", "user_perfil"));
     }
 
     /**
@@ -44,20 +47,36 @@ class ReservaController extends Controller
     {
         //
         $request->validate([
-            'id_cancha' => 'required|int',
-            'fecha' => 'required|date',
-            'hora' => 'required|int',
-            'id_usuario' => 'int',
+            "id_cancha" => "required|int",
+            "fecha" => "required|date",
+            "hora" => "required|int",
+            "dni" => "int",
         ]);
+        $usuario = null;
+        if(isset($request->dni))
+        {
+            if(User::find(Auth::user()->id_usuario)->perfil
+                ->Perfil_descripcion == "Usuario")
+            {
+                return response("No autorizado",403);
+            }
+
+            $usuario = PersonaDocumento::where('PersonaDocumento_desc',$request->dni)
+                ->first()
+                ->persona
+                ->usuario;
+        }
 
         Reserva::create([
-            'Reserva_fecha' => $request->fecha,
-            'Reserva_hora' => $request->hora,
-            'rela_usuario' => isset($request->id_usuario) ? $request->id_usuario : Auth::user()->id_usuario,
-            'rela_cancha' => $request->id_cancha,
+            "Reserva_fecha" => $request->fecha,
+            "Reserva_hora" => $request->hora,
+            "rela_usuario" => isset($usuario)
+                ? $usuario->id_usuario
+                : Auth::user()->id_usuario,
+            "rela_cancha" => $request->id_cancha,
         ]);
 
-        return redirect()->route('reserva.index');
+        return redirect()->route("reserva.index");
     }
 
     /**
@@ -74,17 +93,18 @@ class ReservaController extends Controller
     public function edit(Reserva $reserva)
     {
         //
-        $userPerfil = User::find(Auth::user()->id_usuario)->perfil->Perfil_descripcion;
+        $userPerfil = User::find(Auth::user()->id_usuario)->perfil
+            ->Perfil_descripcion;
 
-        if ($userPerfil === "Usuario"){
-            if ($reserva->user->id_usuario != Auth::user()->id_usuario){
-                return response('No Autorizado', 403);
+        if ($userPerfil === "Usuario") {
+            if ($reserva->user->id_usuario != Auth::user()->id_usuario) {
+                return response("No Autorizado", 403);
             }
         }
 
         $canchas = Cancha::all();
 
-        return view('reserva.edit', compact('reserva','canchas'));
+        return view("reserva.edit", compact("reserva", "canchas"));
     }
 
     /**
@@ -95,10 +115,10 @@ class ReservaController extends Controller
         //
         echo "no funca";
         $request->validate([
-            'id_cancha' => 'required|int',
-            'fecha' => 'required|date',
-            'hora' => 'required|int',
-            // 'id_usuario' => 'int',
+            "id_cancha" => "required|int",
+            "fecha" => "required|date",
+            "hora" => "required|int",
+            // 'dni' => 'int',
         ]);
 
         $reserva->rela_cancha = $request->id_cancha;
@@ -107,7 +127,7 @@ class ReservaController extends Controller
 
         $reserva->save();
 
-        return redirect()->route('reserva.index');
+        return redirect()->route("reserva.index");
     }
 
     /**
@@ -124,28 +144,32 @@ class ReservaController extends Controller
     function obtenerHorasDisponibles(Request $request)
     {
         $request->validate([
-            'id_cancha' => 'required|int',
-            'fecha' => 'required|date',
+            "id_cancha" => "required|int",
+            "fecha" => "required|date",
         ]);
 
         $id_cancha = $request->id_cancha;
         $fecha = $request->fecha;
-        
+
         $cancha = Cancha::find($id_cancha);
         $canchaHorario = $cancha->canchahorario;
 
         $horasCancha = collect([]);
-        for($hora = $canchaHorario->hora_desde; $hora <= $canchaHorario->hora_hasta; $hora++)
-        {
+        for (
+            $hora = $canchaHorario->hora_desde;
+            $hora <= $canchaHorario->hora_hasta;
+            $hora++
+        ) {
             $horasCancha->push($hora);
         }
 
-        $horasOcupadas = Reserva::where('Reserva_fecha',$fecha)
+        $horasOcupadas = Reserva::where("Reserva_fecha", $fecha)
             ->get()
             ->reject(function ($reserva) {
-                return $reserva->reservaestado->ReservaEstado_descripcion == "Cancelada";
+                return $reserva->reservaestado->ReservaEstado_descripcion ==
+                    "Cancelada";
             })
-            ->pluck('Reserva_hora');
+            ->pluck("Reserva_hora");
         $horasDisponibles = $horasCancha->diff($horasOcupadas);
 
         return json_encode(array_values($horasDisponibles->toArray()));
