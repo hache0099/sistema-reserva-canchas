@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\PersonaDocumento;
 use App\Models\Perfil;
 use DateTime;
 use Illuminate\Http\Request;
@@ -15,12 +16,37 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $request->validate([
+            'q' => 'string',
+            'search_by' => 'string',
+        ]);
 
-        $usuarios = User::paginate(5);
-        
+        $usuarios = null;
+        if(isset($request->query) && isset($request->search_by))
+        {
+            switch($request->search_by){
+                case "id":
+                    $usuarios = User::find($request->query);
+                    break;
+                case "dni":
+                    $usuarios = PersonaDocumento::where(
+                        "PersonaDocumento_desc",$request->q)
+                        ->first()
+                        ->persona
+                        ->usuario
+                        ->paginate(1);
+                    break;
+                case "email":
+                    $usuarios = User::where("email", $request->query);
+                    break;
+            }
+        }
+        else{
+            $usuarios = User::paginate(5);
+        }
         // $perfiles = Perfil::all();
         return view('gestion.users.index', ['usuarios' => $usuarios]);
     }
@@ -55,9 +81,9 @@ class UserController extends Controller
         //
         $usuario = Auth::user();
         $persona = $usuario->persona;
-        
-        return view("user.profile", 
-        ["user" => $usuario, 
+
+        return view("user.profile",
+        ["user" => $usuario,
 		"persona" => $persona]);
     }
 
