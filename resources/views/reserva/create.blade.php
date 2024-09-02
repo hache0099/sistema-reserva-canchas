@@ -9,10 +9,16 @@
                 @endforeach
             </ul>
         @endif
-            
+
         <form action={{route("reserva.store")}} method="post">
             @csrf
-            
+
+           @if($user_perfil !== "Usuario")
+            <div class="form-group">
+                <label for="dni">DNI del usuario</label>
+                <input class="form-control" id="dni" type="number" name="dni">
+            </div>
+            @endif
             <!-- Selección de la cancha -->
             <div class="form-group">
                 <label for="cancha">Cancha Elegida:</label>
