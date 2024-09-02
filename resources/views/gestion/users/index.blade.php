@@ -6,12 +6,12 @@
         <div class="row mb-3 align-items-center">
             <div class="col-auto">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="query" placeholder="Buscar">
-                    <label for="query" class="form-label">Buscar Usuario</label>
+                    <input type="text" class="form-control" name="q" id="q" placeholder="Buscar">
+                    <label for="q" class="form-label">Buscar Usuario</label>
                 </div>
             </div>
             <div class="col-auto">
-                <select class="form-select">
+                <select name="search_by" class="form-select">
                     <option selected>Buscar por</option>
                     <option value="id">ID</option>
                     <option value="dni">DNI</option>
@@ -19,7 +19,7 @@
                     <option value="nombre">Nombre</option>
                     <option value="apellido">Apellido</option>
                 </select>
-            </div>   
+            </div>
         </div>
 
     </form>
@@ -40,12 +40,14 @@
                     <td>{{ $usuario->perfil->Perfil_descripcion }}</td>
                     <td>
                         <a href="/gestion/usuarios/{{ $usuario->id_usuario }}/editar" class="btn btn-warning btn-sm">Editar</a>
-                     
+
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    @if(null !== $usuarios->links())
     {{$usuarios->links()}}
+    @endif
 </div>
 @endsection
