@@ -12,33 +12,34 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Persona extends Model
 {
     use HasFactory;
-    
-    protected $table = 'Persona';
-    protected $primaryKey = 'id_persona';
+
+    protected $table = "Persona";
+    protected $primaryKey = "id_persona";
     public $timestamps = false;
-    
-    protected $fillable = [
-		"Nombre",
-		"Apellido",
-		"FechaNacimiento"
-    ];
+
+    protected $fillable = ["Nombre", "Apellido", "FechaNacimiento"];
 
     protected $casts = [
-      'FechaNacimiento' => 'datetime:Y-m-d',
+        "FechaNacimiento" => "datetime:Y-m-d",
     ];
 
     function personadocumento()
     {
-      return $this->hasOne(PersonaDocumento::class, 'Persona_id_persona');
+        return $this->hasOne(PersonaDocumento::class, "Persona_id_persona");
     }
 
     function domicilio()
     {
-      return $this->hasOne(Domicilio::class, 'rela_persona');
+        return $this->hasOne(Domicilio::class, "rela_persona");
     }
 
     function personacontacto()
     {
-      return $this->hasMany(PersonaContacto::class, 'rela_persona');
+        return $this->hasMany(PersonaContacto::class, "rela_persona");
+    }
+
+    function usuario()
+    {
+        return $this->hasOne(User::class, "rela_persona");
     }
 }
