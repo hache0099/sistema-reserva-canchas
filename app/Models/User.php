@@ -51,11 +51,11 @@ class User extends Authenticatable
         'fecha_alta' => 'datetime:Y-m-d',
         'password' => 'hashed',
     ];
-    
+
     function persona() {
 		return $this->belongsTo(Persona::class, "rela_persona");
 	}
-	
+
     function perfil()
     {
         return $this->belongsTo(Perfil::class,'rela_perfil');
@@ -64,6 +64,11 @@ class User extends Authenticatable
 	function reservas()
 	{
 		return $this->hasMany(Reserva::class, "rela_usuario");
+	}
+
+	function socio()
+	{
+	   return $this->hasOne(Socio::class,"rela_usuario");
 	}
 
     // function getAuthPassword()
