@@ -18,6 +18,7 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\MetodoPagoController;
 use App\Http\Controllers\TipoDomicilioController;
 use App\Http\Controllers\TipoPagoController;
+use App\Http\Controllers\SocioController;
 use App\Models\TipoContacto;
 use App\Models\TipoDocumento;
 
@@ -42,23 +43,30 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('/profile/editar', [ProfileController::class, 'edit']);
 	Route::post('/profile/actualizar', [ProfileController::class, 'update']);
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
-	
+
 	Route::get('/changePassword',[ChangePasswordController::class,'show']);
 	Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
 
 
-	Route::get('/reserva/getHorasDisponibles',[ReservaController::class,'obtenerHorasDisponibles'])
+	Route::get('/reserva/getHorasDisponibles',[
+    	ReservaController::class,
+    	'obtenerHorasDisponibles'
+    	])
 		->name('reserva.getHorasDisponibles');
 	Route::resource('reserva',ReservaController::class);
-	
 
-	
+	Route::get('/membresia/unirse', [SocioController::class, 'mostrarUnirse'])->name('membresia.unirse');
+    Route::post('/membresia/unirse', [SocioController::class, 'procesarUnirse']);
+    Route::get('/membresia/autogestion', [SocioController::class, 'mostrarAutogestion'])->name('membresia.autogestion');
 	// Route::middleware(['check.access'])->group(function(){
 		Route::get('/gestion',[GestionController::class,'show']);
 		Route::prefix('gestion')->group(function () {
 			Route::get('/perfiles',[PerfilController::class,'show']);
 			Route::get('/perfiles/{id}/editar',[PerfilController::class,'edit']);
 			Route::post('/perfiles/{id}/update',[PerfilController::class,'update']);
+
+			Route::get('/socios', [SocioController::class, 'listarSocios'])->name('gestion.socios');
+			Route::get('/socios/{id}', [SocioController::class, 'verSocio'])->name('gestion.socios.ver');
 
 
 			Route::get('/usuarios', [UserController::class,'index']);
@@ -120,7 +128,7 @@ Route::middleware(['auth'])->group(function() {
 			Route::post('/tipos-domicilio/store', [TipoDomicilioController::class,'store'])->name('tipos-domicilio.store');
 			Route::get('/tipos-domicilio/{id}/delete', [TipoDomicilioController::class,'delete'])->name('tipos-domicilio.delete');
 			Route::get('/tipos-domicilio/{id}/restore', [TipoDomicilioController::class,'restore'])->name('tipos-domicilio.restore');
-		
+
 			Route::get('/tipos-pago', [TipoPagoController::class,'index'])->name('tipopago.index');
 			Route::get('/tipos-pago/{id}/edit', [TipoPagoController::class,'edit'])->name('tipopago.edit');
 			Route::get('/tipos-pago/create', [TipoPagoController::class,'create'])->name('tipopago.create');
@@ -128,8 +136,8 @@ Route::middleware(['auth'])->group(function() {
 			Route::post('/tipos-pago/store',[TipoPagoController::class,'store'])->name('tipopago.store');
 			Route::get('/tipos-pago/{id}/delete', [TipoPagoController::class,'delete'])->name('tipopago.delete');
 			Route::get('/tipos-pago/{id}/restore', [TipoPagoController::class,'restore'])->name('tipopago.restore');
-			
-			
+
+
 		});
 	// });
 });
@@ -139,4 +147,3 @@ Route::post('/validateLogin',[LoginController::class,'login']);
 Route::post('/validateRegister',[RegisterController::class,'validateRegister']);
 Route::get('/register',[RegisterController::class,'show'])->name('register');
 Route::get('/canchas',[CanchaController::class,'index'])->name('canchas');
-
