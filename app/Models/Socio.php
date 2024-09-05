@@ -16,7 +16,7 @@ class Socio extends Model
 	protected $fillable = [
 	    "rela_usuario",
 		"rela_EstadoMemebresia",
-		"socio_fecha_alta",
+		"Socio_fecha_alta",
 	];
 
 	protected $casts = [
