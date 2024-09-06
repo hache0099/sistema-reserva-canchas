@@ -147,4 +147,6 @@ Route::get('/register',[RegisterController::class,'show'])->name('register');
 Route::get('/canchas',[CanchaController::class,'index'])->name('canchas');
 
 Route::get('/changePassword',[ChangePasswordController::class,'show']);
-Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
+Route::post('/changePassword/verifyEmail',[ChangePasswordController::class,'generateToken']);
+Route::get('/verifyToken',[ChangePasswordController::class,'verifyToken']);
+Route::post('/verifyPassword',[ChangePasswordController::class,'changePassword']);
