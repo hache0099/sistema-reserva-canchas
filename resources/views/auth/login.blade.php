@@ -26,8 +26,9 @@
 			</div>
 			<button class="btn btn-primary w-100 py-3" type="submit">Iniciar sesión</button>
 		</form>
-		
+
 		<a href="/register">Registrarse</a>
+		<a href="/changePassword">Olvidé mi contraseña</a>
 	</div>
 <!--
 </div>
