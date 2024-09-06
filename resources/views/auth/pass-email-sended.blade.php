@@ -1,3 +1,3 @@
 <div>
-    <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
+    Se ha enviado un email, vaya a su correo
 </div>
