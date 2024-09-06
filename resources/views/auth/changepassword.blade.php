@@ -18,16 +18,6 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="current_password">Contraseña Actual</label>
-                            <input type="password" name="current_password" id="current_password" class="form-control @error('current_password') is-invalid @enderror" required>
-                            @error('current_password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
                             <label for="new_password">Nueva Contraseña</label>
                             <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
                             @error('new_password')
