@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UsuarioToken;
 use App\Models\TipoToken;
+use App\Mail\ChangePassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 class ChangePasswordController extends Controller
@@ -17,7 +20,7 @@ class ChangePasswordController extends Controller
     //
 
     function show(){
-        return view('auth.changepassword');
+        return view('auth.change-password-email');
     }
 
     function generateToken(Request $request)
@@ -26,33 +29,43 @@ class ChangePasswordController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email',$request->email)
-            ->with('persona')
-            ->get();
+        $userExists = User::where('email',$request->email)->exists();
 
-        if(!isset($user))
+        if(!$userExists)
         {
-            return back()->withErrors(['emailnotexist' => 'El email no existe']);
+            return back()->withErrors(['emailnotexist' => 'El email no existe'])->withInput();
         }
 
-        $token_hash = Str::random(60);
-        $expireDate = new Datetime();
-        $expireDate->add(new DateInterval('PT1H'));
+        $user = User::where('email',$request->email)->first();
 
+
+        $token_hash = Str::random(60);
+        $expireDate = now();
+        $expireDate->addHours(1);
+
+        try{
+        DB::beginTransaction();
         $token = UsuarioToken::create([
             'token_hash' => $token_hash,
             'expires_at' => $expireDate->format('Y-m-d H:i:s'),
             'rela_usuario' => $user->id_usuario,
-            'rela_tipotoken' => TipoToken::where('TipoToken_desc','Cambiar contraseña')
-                ->get()
+            'rela_tipotoken' => TipoToken::where('descripcion','Cambiar contraseña')
+                ->first()
                 ->idTipoToken,
         ]);
 
-        Mail::to($user->email)
-            ->suject("Cambio de contraseña")
-            ->view('emails.ChangePasswordEmail', ['user' => $user, 'token' => $token]);
+        Mail::to($user)->send(new ChangePassword($user, $token));
 
+        DB::commit();
         return view('auth.pass-email-sended');
+        } catch (Throwable $e){
+            DB::rollBack();
+            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
+    }
+
+    function showPasswordForm()
+    {
 
     }
 
