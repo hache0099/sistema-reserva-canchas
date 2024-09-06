@@ -14,6 +14,6 @@ class TipoToken extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'TipoToken_desc',
+        'descripcion',
     ];
 }
