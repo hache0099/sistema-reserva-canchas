@@ -44,8 +44,6 @@ Route::middleware(['auth'])->group(function() {
 	Route::post('/profile/actualizar', [ProfileController::class, 'update']);
 	Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 
-	Route::get('/changePassword',[ChangePasswordController::class,'show']);
-	Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
 
 
 	Route::get('/reserva/getHorasDisponibles',[
@@ -147,3 +145,6 @@ Route::post('/validateLogin',[LoginController::class,'login']);
 Route::post('/validateRegister',[RegisterController::class,'validateRegister']);
 Route::get('/register',[RegisterController::class,'show'])->name('register');
 Route::get('/canchas',[CanchaController::class,'index'])->name('canchas');
+
+Route::get('/changePassword',[ChangePasswordController::class,'show']);
+Route::post('/validateChangePassword',[ChangePasswordController::class,'changePassword']);
