@@ -4,12 +4,12 @@
     <title>Cambio de Contraseña</title>
 </head>
 <body>
-    <h1>Bienvenido {{ $user->persona->Nombre }}</h1>
-    <p>Estimado/a {{ $user->persona->Nombre }},</p>
+    <h1>Bienvenido {{ $nombre }}</h1>
+    <p>Estimado/a {{ $nombre }},</p>
     <p>Haga click <a
-        href=localhost:8000/verifyChangePassword?token={{$token}}&id={{$user->id_usuario}}>
+        href="http://localhost:8000/verifyChangePassword?token={{$token}}&id={{$id_usuario}}">
         Aquí</a>
-        para cambiar tu contrasesa</p>
+        para cambiar tu contraseña</p>
 
 </body>
 </html>
