@@ -19,7 +19,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="/canchas/">Canchas</a>
 					</li>
-					
+					@if(Auth::user()->perfil->Perfil_descripcion !== "Usuario")
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" role=button data-bs-toggle="dropdown" href="!#"> Reportes</a>
 						<ul class="dropdown-menu">
@@ -29,6 +29,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href='/gestion/'>Gestión</a>
 					</li>
+					@endif
 					<li class="nav-item ms-5">
 						<a class="nav-link" href={{route("logout")}}>Cerrar sesión</a>
 					</li>
