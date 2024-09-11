@@ -20,8 +20,9 @@ class ChangePassword extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        protected User $user,
-        protected UsuarioToken $token
+        protected $id_usuario,
+        protected $nombre,
+        protected $token,
     )
     {
         //
@@ -47,9 +48,9 @@ class ChangePassword extends Mailable
         return new Content(
             view: 'emails.ChangePasswordEmail',
             with: [
-                'id' => $this->user->id_usuario,
-                'nombre' => $this->user->persona->Nombre,
-                'token' => $this->token->token_hash,
+                'id_usuario' => $this->id_usuario,
+                'nombre' => $this->nombre,
+                'token' => $this->token,
             ]
         );
     }
