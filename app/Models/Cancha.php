@@ -9,14 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Cancha extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'Cancha';
     protected $primaryKey = 'id_cancha';
     public $timestamps = false;
-    
+
     protected $fillable = [
       'Cancha_cantidad_max_personas',
-      'Cancha_precio_hora',
       'rela_TipoCancha',
       'rela_CanchaEstado',
     ];
@@ -39,5 +38,15 @@ class Cancha extends Model
     function canchahorario()
     {
       return $this->hasOne(HorarioCancha::class,'rela_cancha');
+    }
+
+    function preciocancha()
+    {
+        return $this->hasMany(PrecioCancha::class,'rela_cancha');
+    }
+
+    function precioActual()
+    {
+        return $this->hasOne(PrecioCancha::class,'rela_cancha')->latest('fecha_inicio');
     }
 }
