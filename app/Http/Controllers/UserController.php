@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\TipoDocumento;
 use App\Models\PersonaDocumento;
+use App\Models\PersonaContacto;
 use App\Models\Perfil;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
@@ -57,6 +60,10 @@ class UserController extends Controller
     public function create()
     {
         //
+        $tiposDocumento = TipoDocumento::all();
+        $perfiles = Perfil::all();
+
+        return view('gestion.users.create', compact('tiposDocumento', 'perfiles'));
     }
 
     /**
@@ -65,12 +72,61 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        $user = new User;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->fecha_alta = date("Ymd");
-        $user->rela_persona = $request->rela_persona;
-        $user->rela_perfil = $request->rela_perfil;
+        $request->validate([
+            'email' => 'required|email',
+            'dni' => 'required|numeric',
+            'perfil' => 'required|numeric|min:1',
+            'telefono' => 'required|numeric',
+            'name' => 'string',
+            'apellido' => 'string',
+        ]);
+
+        $userExists = User::where('email', $request->email)->exists();
+        $dniExists = PersonaDocumento::where('PersonaDocumento_desc', $request->dni)->exists();
+
+        if($userExists || $dniExists)
+        {
+            return back()->withErrors(['already exists' => 'el email o dni ya está registrado']);
+        }
+        
+        try{
+            DB::beginTransaction();
+			$persona = Persona::create([
+				'Nombre' => $request->name,
+				'Apellido' => $request->apellido,
+				//'Telefono' => $request->telefono,
+				//'FechaNacimiento' => $request->fechanac,
+			]);
+
+			$domicilio = Domicilio::create([
+				'rela_persona' => $persona->id_persona,
+			]);
+
+			$persona_doc = PersonaDocumento::create([
+				'PersonaDocumento_desc' => $request->dni,
+				'Persona_id_persona' => $persona->id_persona,
+				'TipoDocumento_id_TipoDocumento' => $request->tipodni,
+			]);
+
+			$persona_contacto = PersonaContacto::create([
+				'PersonaContacto_desc' => $request->telefono,
+				'rela_persona' => $persona->id_persona,
+				'rela_tipocontacto' => TipoContacto::where('Contacto_descripcion', 'Telefono')
+					->first()->idContacto,
+			]);
+			
+			$user = User::create([
+				'email' => $request->email,
+				'password' => $request->dni,
+				'rela_persona' => $persona->id_persona,
+				'rela_perfil' => $request->perfil,
+				'fecha_alta' => now()->format('Y-m-d'),
+			]);
+			DB::commit();
+        } catch (Throwable $e){
+            DB::rollBack();
+            
+        }
     }
 
     /**
