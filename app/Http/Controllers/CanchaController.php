@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cancha;
 //use App\Models\CanchaEstado;
 use App\Models\TipoCancha;
+use App\Models\PrecioCancha;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Throwable;
@@ -17,14 +18,14 @@ class CanchaController extends Controller
     public function index()
     {
         //
-        $canchas = Cancha::all();
+        $canchas = Cancha::with('precioActual')->get();
 
         return view('canchas',['canchas' => $canchas]);
     }
 
     function showGestion()
     {
-        $canchas = Cancha::all();
+        $canchas = Cancha::with('preciocancha')->get();
 
         return view('gestion.cancha.index',['canchas' => $canchas]);
     }
@@ -56,10 +57,13 @@ class CanchaController extends Controller
             DB::beginTransaction();
             $cancha = new Cancha;
             $cancha->Cancha_cantidad_max_personas = $request['Cancha_cantidad_max_personas'];
-            $cancha->Cancha_precio_hora = $request['Cancha_precio_hora'];
             $cancha->rela_TipoCancha = $request['rela_tipocancha'];
             $cancha->rela_CanchaEstado = 1;
             $cancha->save();
+
+            $precioCancha = PrecioCancha::create([
+
+            ]);
             DB::commit();
 
             return redirect('/gestion/canchas');
@@ -88,6 +92,13 @@ class CanchaController extends Controller
         return view('gestion.cancha.edit',["cancha" => $cancha, 'tiposCancha' => $tiposCancha]);
     }
 
+    function editPrecio()
+    {
+        $canchas = Cancha::with('precioActual')->get();
+
+        return view('gestion.cancha.actualizar-precio', compact('canchas'));
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -102,7 +113,50 @@ class CanchaController extends Controller
 
         $cancha = Cancha::find($id_cancha);
 
-        $cancha->update($request->all());
+        $cancha->Cancha_cantidad_max_personas = $request->Cancha_cantidad_max_personas;
+        $cancha->rela_tipocancha = $request->rela_tipocancha;
+
+        $cancha->precioActual->fecha_fin = now()->format('Y-m-d');
+        $cancha->save();
+        $cancha->precioActual->save();
+
+        $precioCancha = PrecioCancha::create([
+            'fecha_inicio' => now()->format('Y-m-d'),
+            'precio' => $request->Cancha_precio_hora,
+            'rela_cancha' => $cancha->id_cancha,
+        ]);
+
+
+
+        return redirect('/gestion/canchas/')->with('status', 'Se ha actualizado con éxito');
+    }
+
+
+    function updatePrecios(Request $request)
+    {
+        $request->validate([
+            'porcentaje' => 'required|numeric',
+        ]);
+
+        if($request->porcentaje === 0.0)
+        {
+            return redirect('/gestion/canchas/')->with('status', 'Se ha actualizado con éxito');
+        }
+
+        $canchas = Cancha::with('precioActual')->get();
+
+        foreach($canchas as $cancha)
+        {
+            $precioActual = $cancha->precioActual;
+            $precioActual->fecha_fin = now()->format('Y-m-d');
+            $precioActual->save();
+
+            PrecioCancha::create([
+                'precio' => $precioActual->precio + ($precioActual->precio * ($porcentaje / 100)),
+                'fecha_inicio' => now()->format('Y-m-d'),
+                'rela_cancha' => $cancha->id_cancha,
+            ]);
+        }
 
         return redirect('/gestion/canchas/')->with('status', 'Se ha actualizado con éxito');
     }
