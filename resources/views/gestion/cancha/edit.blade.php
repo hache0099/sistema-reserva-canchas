@@ -9,7 +9,7 @@
             <label for="id_cancha">ID Cancha:</label>
             <input type="text" class="form-control" id="id_cancha" name="id_cancha" value="{{ $cancha->id_cancha }}" readonly>
         </div> --}}
-        
+
         <div class="form-group">
             <label for="Cancha_cantidad_max_personas">Cantidad Máxima de Personas:</label>
             <input type="number" class="form-control" id="Cancha_cantidad_max_personas" name="Cancha_cantidad_max_personas" value="{{ $cancha->Cancha_cantidad_max_personas }}">
@@ -17,7 +17,7 @@
 
         <div class="form-group">
             <label for="Cancha_precio_hora">Precio por Hora:</label>
-            <input type="number" class="form-control" id="Cancha_precio_hora" name="Cancha_precio_hora" value="{{ $cancha->Cancha_precio_hora }}">
+            <input type="number" class="form-control" id="Cancha_precio_hora" name="Cancha_precio_hora" value="{{ $cancha->precioActual->precio }}">
         </div>
 
         <div class="form-group">
