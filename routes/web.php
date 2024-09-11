@@ -69,13 +69,17 @@ Route::middleware(['auth'])->group(function() {
 
 			Route::get('/usuarios', [UserController::class,'index']);
 			Route::get('/usuarios/{id}/editar', [ProfileController::class,'edit']);
+			Route::get('/usuarios/create',[UserController::class,'create']);
 			Route::post('/usuarios/{id}/update', [ProfileController::class,'update']);
+			Route::post('/usuarios/store',[UserController::class,'store']);
 
 			Route::get('/canchas',[CanchaController::class,'showGestion']);
 			Route::get('/canchas/create',[CanchaController::class,'create']);
 			Route::post('/canchas/store',[CanchaController::class,'store']);
 			Route::get('/canchas/{id}/editar',[CanchaController::class,'edit']);
 			Route::post('/canchas/{id}/update',[CanchaController::class,'update']);
+			Route::get('/canchas/editarPrecios',[CanchaController::class,'editPrecio']);
+			Route::post('/canchas/actualizarPrecios',[CanchaController::class,'updatePrecios'])->name('canchas.updatePrices');
 
 			Route::get('/fotos-canchas', [CanchaFotoController::class, 'index']);
 			Route::get('/fotos-canchas/create/{id}', [CanchaFotoController::class, 'create']);
@@ -148,5 +152,5 @@ Route::get('/canchas',[CanchaController::class,'index'])->name('canchas');
 
 Route::get('/changePassword',[ChangePasswordController::class,'show']);
 Route::post('/changePassword/verifyEmail',[ChangePasswordController::class,'generateToken']);
-Route::get('/verifyToken',[ChangePasswordController::class,'verifyToken']);
-Route::post('/verifyPassword',[ChangePasswordController::class,'changePassword']);
+Route::get('/changePassword/verifyToken',[ChangePasswordController::class,'verifyToken']);
+Route::post('/changePassword/verifyPassword',[ChangePasswordController::class,'changePassword']);
