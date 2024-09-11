@@ -27,6 +27,9 @@ class User extends Authenticatable
         //~ 'name',
         'email',
         'password',
+        'estado',
+        'verificado',
+        'password_changed',
         'fecha_alta',
         'rela_persona',
         'rela_perfil'
