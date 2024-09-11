@@ -4,7 +4,7 @@
 		@include('layout.partials.head')
 	</head>
 	<body>
-		@include('layout.partials.navbar')
+		@include('layout.partials.navbar', ["perfil" => App\Models\User::find(Auth::user()->perfil->Perfil_descripcion)])
 <!--
 		@include('layout.partials.header')
 -->
