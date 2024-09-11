@@ -1,47 +1,25 @@
 @extends('layout.mainlayout')
+
 @section('content')
 <div class="container">
     <h1 class="my-4">Gestión</h1>
-    
-    <div class="card my-3">
-        <div class="card-header">
-            Gestión Usuarios
-        </div>
-        <div class="card-body">
-            <ul>
-                <li><a href="/gestion/usuarios">Usuarios</a></li>
-                <li><a href="/gestion/tipos-contacto">Tipos de Contacto</a></li>
-                <li><a href="/gestion/tipos-documento">Tipos de Documento</a></li>
-                <li><a href="/gestion/perfiles">Perfiles</a></li>
-                <li><a href="/gestion/tipos-domicilio">Tipos Domicilio</a></li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="card my-3">
-        <div class="card-header">
-            Gestión Canchas
-        </div>
-        <div class="card-body">
-            <ul>
-                <li><a href="/gestion/canchas">Canchas</a></li>
-                <li><a href="/gestion/tipos-cancha">Tipos de Cancha</a></li>
-                <li><a href="/gestion/fotos-canchas">Fotos de Canchas</a></li>
-                <li><a href="/gestion/horarios-canchas">Horarios de las Canchas</a></li>
-            </ul>
-        </div>
-    </div>
 
-    <div class="card my-3">
-        <div class="card-header">
-            Gestión Reservas
-        </div>
-        <div class="card-body">
-            <ul>
-                <li><a href="/gestion/metodos-pago">Metodos de Pago</a></li>
-				<li><a href="/gestion/tipos-pago">Tipos de Pago</a></li>
-            </ul>
-        </div>
+    <!-- Iterar sobre los módulos para generar las cartas -->
+    <div class="row">
+        @foreach($modulos as $modulo)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                 <a href="{{ rtrim($modulo->Modulo_ruta, '*') }}" class="card-block stretched-link">
+                    <div class="card-body text-center">
+                        <!-- Mostrar descripción del módulo -->
+                        <h5 class="card-title">{{ $modulo->Modulo_descripcion }}</h5>
+                        <!-- Enlace a la ruta del módulo -->
+                       
+                    </div>
+                </a>
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>
 @endsection
