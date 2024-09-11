@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UsuarioToken;
 use App\Models\TipoToken;
-use App\Mail\ChangePassword;
+//use App\Mail\ChangePassword;
+use App\Jobs\SendChangePassEmail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+//use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -41,7 +42,7 @@ class ChangePasswordController extends Controller
 
         $token_hash = Str::random(60);
         $expireDate = now();
-        $expireDate->addHours(1);
+        $expireDate->addHours(3);
 
         try{
         DB::beginTransaction();
@@ -54,7 +55,14 @@ class ChangePasswordController extends Controller
                 ->idTipoToken,
         ]);
 
-        Mail::to($user)->send(new ChangePassword($user, $token));
+        $detalles = array(
+            'email' => $user->email,
+            'id_usuario' => $user->id_usuario,
+            'nombre' => $user->persona->Nombre,
+            'token' => $token_hash,
+        );
+
+        dispatch(new SendChangePassEmail($detalles));
 
         DB::commit();
         return view('auth.pass-email-sended');
