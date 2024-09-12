@@ -22,8 +22,8 @@ class RegisterController extends Controller
     //
     function show()
     {
-		$tiposDocumento = TipoDocumento::all();
-		$tiposContacto = TipoContacto::all();
+		$tiposDocumento = TipoDocumento::where('estado',1)->get();
+		//$tiposContacto = TipoContacto::all();
 		return view('auth.register', [
 			// 'tiposContacto' => $tiposContacto,
 			'tiposDocumento' => $tiposDocumento
