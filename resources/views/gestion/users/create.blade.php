@@ -4,6 +4,15 @@
 <div class='container p-5 bg-light text-dark'>
     <div class='p-3 border rounded-3' style='background-color: white;'>
         <h1>Crear Usuario</h1>
+        @if ($errors->any())
+			<div class='alert alert-danger'>
+			<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+			</div>
+		@endif
         <form method="POST" action="/gestion/usuarios/store">
             @csrf
             <h2>Usuario</h2>
