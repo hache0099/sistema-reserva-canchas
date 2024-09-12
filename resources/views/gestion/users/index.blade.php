@@ -1,8 +1,12 @@
 @extends('layout.mainlayout')
+@section('title','Listado de usuarios')
 @section('content')
 <div class="container my-4">
     <h1>Lista de Usuarios y Perfiles</h1>
     <form action="" method="get" name="buscarUsuario" id="buscarUsuario">
+        <div class="col-auto">
+            <a href="/gestion/usuarios/create" role=button class="btn btn-primary">Crear usuario</a>
+        </div>
         <div class="row mb-3 align-items-center">
             <div class="col-auto">
                 <div class="form-floating">
@@ -21,7 +25,6 @@
                 </select>
             </div>
         </div>
-
     </form>
     <table class="table table-bordered">
         <thead>
@@ -33,21 +36,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($usuarios as $usuario)
+            @forelse ($usuarios as $usuario)
                 <tr>
                     <td>{{ $usuario->id_usuario }}</td>
                     <td>{{ $usuario->email }}</td>
-                    <td>{{ $usuario->perfil->Perfil_descripcion }}</td>
+                    <td>{{ $usuario->perfil->Perfil_descripcion ?? 'N/A' }}</td>
                     <td>
                         <a href="/gestion/usuarios/{{ $usuario->id_usuario }}/editar" class="btn btn-warning btn-sm">Editar</a>
-
+                        <a href="/gestion/usuarios/{{ $usuario->id_usuario }}/resetPassword" class="btn btn-warning btn-sm">Resetear contraseña</a>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="4" class="text-center">No se encontraron usuarios.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
-    @if(null !== $usuarios->links())
-    {{$usuarios->links()}}
+    @if($usuarios instanceof \Illuminate\Pagination\LengthAwarePaginator) <!-- Verifica si es una instancia paginada -->
+        {{ $usuarios->links() }}
     @endif
 </div>
 @endsection
+
