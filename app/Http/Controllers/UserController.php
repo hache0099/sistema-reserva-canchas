@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Persona;
+use App\Models\Domicilio;
+use App\Models\TipoDomicilio;
 use App\Models\TipoDocumento;
+use App\Models\TipoContacto;
 use App\Models\PersonaDocumento;
 use App\Models\PersonaContacto;
 use App\Models\Perfil;
@@ -28,29 +32,33 @@ class UserController extends Controller
         ]);
 
         $usuarios = null;
-        if(isset($request->query) && isset($request->search_by))
-        {
-            switch($request->search_by){
-                case "id":
-                    $usuarios = User::find($request->query);
-                    break;
-                case "dni":
-                    $usuarios = PersonaDocumento::where(
-                        "PersonaDocumento_desc",$request->q)
-                        ->first()
-                        ->persona
-                        ->usuario
-                        ->paginate(1);
-                    break;
-                case "email":
-                    $usuarios = User::where("email", $request->query);
-                    break;
+        if (isset($request->q) && isset($request->search_by)) {
+        switch ($request->search_by) {
+            case "id":
+                $usuario = User::find($request->q); // Cambia de query a q
+                $usuarios = $usuario ? collect([$usuario]) : collect([]); // Siempre devuelve una colección
+                break;
+            case "dni":
+                $documento = PersonaDocumento::where("PersonaDocumento_desc", $request->q)->first();
+                $usuarios = $documento ? $documento->persona->usuario()->paginate(1) : collect([]); // Asegura que sea una colección paginada
+                break;
+            case "email":
+                $usuarios = User::where("email", $request->q)->paginate(1); // Cambia de query a q
+                break;
+            case "nombre":
+                $usuarios = User::where("name", 'LIKE', '%' . $request->q . '%')->paginate(5); // Búsqueda por nombre
+                break;
+            case "apellido":
+                $usuarios = User::where("apellido", 'LIKE', '%' . $request->q . '%')->paginate(5); // Búsqueda por apellido
+                break;
+            default:
+                $usuarios = User::paginate(5); // Default a mostrar todos los usuarios con paginación
+                break;
             }
+        } else {
+            $usuarios = User::paginate(5); // Si no hay búsqueda, devuelve la paginación normal
         }
-        else{
-            $usuarios = User::paginate(5);
-        }
-        // $perfiles = Perfil::all();
+
         return view('gestion.users.index', ['usuarios' => $usuarios]);
     }
 
@@ -123,9 +131,10 @@ class UserController extends Controller
 				'fecha_alta' => now()->format('Y-m-d'),
 			]);
 			DB::commit();
+			return redirect('/gestion/usuarios')->with('status', 'se ha creado el usuario con éxito');
         } catch (Throwable $e){
             DB::rollBack();
-            
+            return back()->withErrors(['error', $e->getMessage()]);
         }
     }
 
@@ -141,6 +150,17 @@ class UserController extends Controller
         return view("user.profile",
         ["user" => $usuario,
 		"persona" => $persona]);
+    }
+
+
+    function resetPassword($id_usuario)
+    {
+        $user = User::find($id_usuario);
+        $dni = $user->persona->personadocumento->PersonaDocumento_desc;
+        
+        $user->password = $dni;
+        $user->password_changed = 0;
+        $user->save();
     }
 
     /**
