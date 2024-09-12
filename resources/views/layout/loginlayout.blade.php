@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		@include('layout.partials.head',['title' => 'Iniciar Sesión'])
-	</head>
-	<body class='d-flex align-items-center py-4 bg-body-tertiary' style='height: 100vh;'>
+<head>
+    @include('layout.partials.head')
+</head>
+<body class='d-flex justify-content-center align-items-center bg-body-tertiary' style='height: 100vh;'>
 
-		@yield('content')
+    @yield('content')
 
-		@include('layout.partials.footer-scripts')
-	</body>
+    @include('layout.partials.footer-scripts')
+    @yield('custom-scripts')
+</body>
 </html>
+
