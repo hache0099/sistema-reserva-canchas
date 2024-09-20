@@ -13,7 +13,7 @@
         <form action={{route("reserva.store")}} method="post">
             @csrf
 
-           @if($user_perfil !== "Usuario")
+           @if($user_perfil !== "usuario")
             <div class="form-group">
                 <label for="dni">DNI del usuario</label>
                 <input class="form-control" id="dni" type="number" name="dni">
@@ -25,7 +25,7 @@
                 <select class="form-control" id="cancha" name="id_cancha" required>
                     <option value="">Seleccionar Cancha</option>
                     @foreach($canchas as $cancha)
-                        <option value="{{ $cancha->id_cancha }}">{{$cancha->tipocancha->Material}}, {{ $cancha->Cancha_cantidad_max_personas }} personas, Precio: ${{ $cancha->Cancha_precio_hora }}</option>
+                        <option value="{{ $cancha->id_cancha }}">{{$cancha->tipocancha->Material}}, {{ $cancha->Cancha_cantidad_max_personas }} personas, Precio: ${{ $cancha->precioActual->precio }}</option>
                     @endforeach
                 </select>
             </div>
