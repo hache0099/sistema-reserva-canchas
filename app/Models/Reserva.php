@@ -18,6 +18,8 @@ class Reserva extends Model
 	protected $fillable = [
 		'Reserva_fecha',
 		'Reserva_hora',
+		'monto_total',
+		'monto_pagado',
 		'rela_ReservaEstado',
 		'rela_usuario',
 		'rela_cancha'
@@ -27,8 +29,8 @@ class Reserva extends Model
 		'Reserva_fecha' => 'date:Y-m-d',
 	];
     
-    function user()
-    {
+	function user()
+	{
 		return $this->belongsTo(User::class, "rela_usuario");
 	}
 	
@@ -41,4 +43,20 @@ class Reserva extends Model
 	{
 		return $this->belongsTo(ReservaEstado::class,'rela_ReservaEstado');
 	}
+
+	function ingresoegreso()
+	{
+		return $this->HasMany(IngresoEgreso::class,'rela_reserva');
+	}
+
+	function detallepago()
+	{
+		return $this->hasMany(DetallePago::class,'rela_reserva');
+	}
+
+	function estadopago()
+	{
+		return $this->belongsTo(EstadoPago::class,'rela_EstadoPago');
+	}
+	
 }
