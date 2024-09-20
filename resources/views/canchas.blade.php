@@ -20,6 +20,9 @@
                                 <li class=list-group-item>
                                     Hasta {{$cancha->Cancha_cantidad_max_personas}} personas
                                 </li>
+                                <li class=list-group-item>
+                                    Precio = ${{$cancha->precioActual->precio}}
+                                </li>
                             </ul>
                         </div>
                     </div>
