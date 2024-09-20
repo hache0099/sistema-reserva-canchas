@@ -63,8 +63,11 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('/perfiles/{id}/editar',[PerfilController::class,'edit']);
 			Route::post('/perfiles/{id}/update',[PerfilController::class,'update']);
 
-			Route::get('/socios', [SocioController::class, 'listarSocios'])->name('gestion.socios');
+			Route::get('/socios', [SocioController::class, 'index'])->name('gestion.socios');
 			Route::get('/socios/{id}', [SocioController::class, 'verSocio'])->name('gestion.socios.ver');
+
+			Route::get('/reservas',[ReservaController::class,'gestionIndex']);
+			Route::get('/reservas/buscar',[ReservaController::class,'buscarReservas'])->name('gestion.reservas.buscar');
 
 
 			Route::get('/usuarios', [UserController::class,'index']);
@@ -72,6 +75,7 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('/usuarios/create',[UserController::class,'create']);
 			Route::post('/usuarios/{id}/update', [ProfileController::class,'update']);
 			Route::post('/usuarios/store',[UserController::class,'store']);
+			Route::get('/usuarios/{id}/resetPassword',[UserController::class,'resetPassword']);
 
 			Route::get('/canchas',[CanchaController::class,'showGestion']);
 			Route::get('/canchas/create',[CanchaController::class,'create']);
