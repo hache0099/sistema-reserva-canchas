@@ -8,9 +8,9 @@
     <form id="updatePricesForm" action="{{ route('canchas.updatePrices') }}" method="POST">
         @csrf
         <div class="form-group">
-            <label for="percentage">Ajustar Precios Porcentaje (%)</label>
+            <label for="porcentaje">Ajustar Precios Porcentaje (%)</label>
             <!-- Agrega el evento 'input' para actualizar los precios en tiempo real -->
-            <input type="number" id="percentage" name="percentage" class="form-control" step="0.01" placeholder="Ingrese el porcentaje de ajuste" oninput="calculateNewPrices()">
+            <input type="number" id="porcentaje" name="porcentaje" class="form-control" step="0.01" placeholder="Ingrese el porcentaje de ajuste" oninput="calculateNewPrices()">
         </div>
     </form>
 
@@ -44,7 +44,7 @@
 <script>
     function calculateNewPrices() {
         // Obtener el porcentaje ingresado por el usuario
-        let percentage = parseFloat(document.getElementById('percentage').value);
+        let percentage = parseFloat(document.getElementById('porcentaje').value);
         if (isNaN(percentage)) {
             percentage = 0; // Si no es un número válido, establece el porcentaje en 0
         }
