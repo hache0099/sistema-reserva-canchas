@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title', 'Mis reservas')
 @section('content')
 	<div class=container>
 		<div class='col'>
@@ -18,7 +19,7 @@
 							<h5>Canchas y Horas</h5>
 							Cancha: Cancha {{$reserva->cancha->id_cancha}}: {{$reserva->cancha->tipocancha->Material}}
 							Hora: {{$reserva->Reserva_hora}}:00
-							Estado: {{$reserva->reservaestado->ReservaEstado_descripcion}}
+							Estado: {{$reserva->estadopago->EstadoPago_desc}}
 						</div>
 						<div class="mt-3">
 							<a role="button" class="btn btn-primary" href={{route("reserva.edit",['reserva' => $reserva])}}>Editar</a>
