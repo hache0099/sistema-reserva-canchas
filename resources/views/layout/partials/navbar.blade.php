@@ -19,7 +19,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="/canchas/">Canchas</a>
 					</li>
-					@if(Auth::user()->perfil->Perfil_descripcion !== "Usuario")
+					@if(Auth::user()->perfil->Perfil_descripcion !== "usuario")
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" role=button data-bs-toggle="dropdown" href="!#"> Reportes</a>
 						<ul class="dropdown-menu">
