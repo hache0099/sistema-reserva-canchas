@@ -29,6 +29,11 @@ class ReservaController extends Controller
         return view("reserva.index", ["reservas" => $reservas]);
     }
 
+    function gestionIndex()
+    {
+        return view('gestion.reservas.index');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -50,13 +55,13 @@ class ReservaController extends Controller
             "id_cancha" => "required|int",
             "fecha" => "required|date",
             "hora" => "required|int",
-            "dni" => "int",
+            "dni" => "nullable|int",
         ]);
         $usuario = null;
         if(isset($request->dni))
         {
             if(User::find(Auth::user()->id_usuario)->perfil
-                ->Perfil_descripcion == "Usuario")
+                ->Perfil_descripcion === "usuario")
             {
                 return response("No autorizado",403);
             }
@@ -66,10 +71,14 @@ class ReservaController extends Controller
                 ->persona
                 ->usuario;
         }
+        $cancha = Cancha::where('id_cancha', $request->id_cancha)
+            ->with("precioActual")
+            ->first();
 
         Reserva::create([
             "Reserva_fecha" => $request->fecha,
             "Reserva_hora" => $request->hora,
+            "monto_total" => $cancha->precioActual->precio, //TODO: agregar posibles descuentos
             "rela_usuario" => isset($usuario)
                 ? $usuario->id_usuario
                 : Auth::user()->id_usuario,
@@ -113,7 +122,6 @@ class ReservaController extends Controller
     public function update(Request $request, Reserva $reserva)
     {
         //
-        echo "no funca";
         $request->validate([
             "id_cancha" => "required|int",
             "fecha" => "required|date",
@@ -174,4 +182,37 @@ class ReservaController extends Controller
 
         return json_encode(array_values($horasDisponibles->toArray()));
     }
+
+    public function buscarReservas(Request $request)
+    {
+        $request->validate([
+            'fecha' => 'date',
+            'pendientes' => 'boolean',
+        ]);
+        
+        $fecha = $request->input('fecha');
+        $verPendientes = $request->input('pendientes');
+
+        // Validar que la fecha esté presente
+        if (!$fecha) {
+            return response()->json([], 400);  // Devuelve un error si la fecha no está presente
+        }
+
+        // Consulta para obtener las reservas según la fecha y estado de pago
+        $reservas = Reserva::with(['cancha','user.persona.personadocumento','estadopago'])
+            ->where('Reserva_fecha',$fecha)
+            ->orderBy("Reserva_fecha");
+
+        // Filtrar por reservas pendientes si el checkbox está marcado
+        if ($verPendientes) {
+            $reservas->where('rela_EstadoPago',1);
+        }
+
+        // Obtener los resultados ordenados por hora
+        //$reservas = $query->orderBy('Reserva.Reserva_hora')->get();
+
+        // Devolver los resultados en formato JSON
+        return response()->json($reservas->get());
+    }
+
 }
