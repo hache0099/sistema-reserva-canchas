@@ -40,7 +40,7 @@ class RegisterController extends Controller
 			'telefono' => 'required|numeric',
 			'tipodni' => 'required|numeric|min:1',
 			'dni' => 'required|numeric',
-			'domicilio' => 'required|max:100',
+			'domicilio' => 'required|string|max:100',
 			'fechanac' => 'required|date',
 		]);
 		
@@ -91,7 +91,8 @@ class RegisterController extends Controller
 				'password' => $request->password,
 				'rela_persona' => $persona->id_persona,
 				'rela_perfil' => Perfil::where('Perfil_descripcion', 'Usuario')->value('idPerfil'),
-				'fecha_alta' => date('Y-m-d')
+				'fecha_alta' => date('Y-m-d'),
+				'password_changed' => 1,
 			]);
 			DB::commit();
 		} catch (Throwable $exception) {
