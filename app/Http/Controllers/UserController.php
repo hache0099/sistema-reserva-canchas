@@ -161,6 +161,8 @@ class UserController extends Controller
         $user->password = $dni;
         $user->password_changed = 0;
         $user->save();
+
+        return redirect("/gestion/usuarios");
     }
 
     /**
@@ -205,8 +207,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id_usuario)
     {
         //
+        $user = User::find($id_usuario);
+
+        $user->estado = 0;
+        $user->save();
     }
 }
