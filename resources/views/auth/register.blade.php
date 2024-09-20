@@ -1,7 +1,7 @@
 @extends('layout.loginlayout')
 @section('title','Registrarse')
 @section('content')
-<div class='container d-flex justify-content-center align-items-center' style='padding-top: 50px;'>
+<div class='container d-flex justify-content-center align-items-center' style='padding-top: 15%;'>
     <div class='p-4 border rounded-3 bg-white' style='max-width: 450px; width: 100%;'>
         <h1 class="text-center mb-4">Registro</h1>
     <form method="POST" id="registroForm" action="/validateRegister">
@@ -72,6 +72,7 @@
 </div>
 </div>
 @endsection
+
 @section("custom-scripts")
 
 <script>
