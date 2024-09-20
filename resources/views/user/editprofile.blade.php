@@ -13,7 +13,7 @@
             </ul>
         @endif
 
-        @if($user->perfil->Perfil_descripcion != "Usuario")
+        @if($user->perfil->Perfil_descripcion != "usuario")
             @if($user->id_usuario != Auth::user()->id_usuario)
                 <input type="hidden" name="editarOtroUsuario" value=1>
                 <input type="hidden" name="id_usuario" value={{$user->id_usuario}}>
