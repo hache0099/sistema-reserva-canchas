@@ -144,6 +144,7 @@ class CanchaController extends Controller
         }
 
         $canchas = Cancha::with('precioActual')->get();
+        $porcentaje = $request->porcentaje;
 
         foreach($canchas as $cancha)
         {
