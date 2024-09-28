@@ -40,6 +40,8 @@
                     <th>Hora de la Reserva</th>
                     <th>Cancha Elegida</th>
                     <th>Estado del Pago</th>
+                    <th>Ingreso</th>
+                    <th>Egreso</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,6 +83,7 @@ $(document).ready(function() {
                             <td>${reserva.Reserva_hora}</td>
                             <td>${reserva.cancha.id_cancha}</td>
                             <td>${reserva.estadopago.EstadoPago_desc}</td>
+                            <td>${reserva.ingresoegreso}</td>
                         </tr>
                     `);
                 });
