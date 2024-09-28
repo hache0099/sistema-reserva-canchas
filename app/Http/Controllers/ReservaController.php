@@ -83,6 +83,7 @@ class ReservaController extends Controller
                 ? $usuario->id_usuario
                 : Auth::user()->id_usuario,
             "rela_cancha" => $request->id_cancha,
+            "rela_PorcentajeSena" => 1,
         ]);
 
         return redirect()->route("reserva.index");
@@ -105,7 +106,7 @@ class ReservaController extends Controller
         $userPerfil = User::find(Auth::user()->id_usuario)->perfil
             ->Perfil_descripcion;
 
-        if ($userPerfil === "Usuario") {
+        if ($userPerfil === "usuario") {
             if ($reserva->user->id_usuario != Auth::user()->id_usuario) {
                 return response("No Autorizado", 403);
             }
@@ -199,7 +200,7 @@ class ReservaController extends Controller
         }
 
         // Consulta para obtener las reservas según la fecha y estado de pago
-        $reservas = Reserva::with(['cancha','user.persona.personadocumento','estadopago'])
+        $reservas = Reserva::with(['cancha','user.persona.personadocumento','estadopago','ingresoegreso'])
             ->where('Reserva_fecha',$fecha)
             ->orderBy("Reserva_fecha");
 
