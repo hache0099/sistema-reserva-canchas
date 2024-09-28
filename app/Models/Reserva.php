@@ -22,7 +22,8 @@ class Reserva extends Model
 		'monto_pagado',
 		'rela_ReservaEstado',
 		'rela_usuario',
-		'rela_cancha'
+		'rela_cancha',
+		'rela_PorcentajeSena',
 	];
 
 	protected $casts = [
@@ -57,6 +58,11 @@ class Reserva extends Model
 	function estadopago()
 	{
 		return $this->belongsTo(EstadoPago::class,'rela_EstadoPago');
+	}
+
+	function porcentajesena()
+	{
+		return $this->belongsTo(PorcentajeSena::class, 'rela_PorcentajeSena');
 	}
 	
 }
