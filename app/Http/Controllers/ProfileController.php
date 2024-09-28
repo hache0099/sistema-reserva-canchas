@@ -124,7 +124,7 @@ class ProfileController extends Controller
     {
         if(isset($id))
         {
-            if(User::find(Auth::user()->id_usuario)->perfil->Perfil_descripcion == "Usuario" 
+            if(User::find(Auth::user()->id_usuario)->perfil->Perfil_descripcion === "usuario" 
                 && $id !== Auth::user()->id_usuario)
             {
                 return response("No Autorizado",403);
@@ -139,7 +139,7 @@ class ProfileController extends Controller
         $infoUsuario['tiposdomicilio'] = $tiposdomicilio;
 
         $user = User::find(Auth::user()->id_usuario);
-        if($user->perfil->Perfil_descripcion != "Usuario")
+        if($user->perfil->Perfil_descripcion !== "usuario")
         {
             $infoUsuario['tiposperfil'] = Perfil::all()
                 ->reject(function ($perfil) use ($user) { 
