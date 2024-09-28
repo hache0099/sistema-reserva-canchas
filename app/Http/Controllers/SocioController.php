@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Socio;
+use App\Models\PrecioMembresia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,17 @@ class SocioController extends Controller
             ->Perfil_descripcion;
 
         return $user_perfil;
+    }
+
+    function mostrarUnirse()
+    {
+        $precioMembresiaActual = PrecioMembresia::latest('fecha_desde')->first()->precio;
+        return view("socios.index", compact('precioMembresiaActual'));
+    }
+
+    function mostrarAutogestion()
+    {
+        return view("socios.autogestion");
     }
 
     function index()
@@ -45,6 +57,11 @@ class SocioController extends Controller
 
     function store(Request $request)
     {
+        $membresia = Socio::create([
+            "Socio_fecha_alta" => now()->format("Y-m-d"),
+            "rela_usuario" => Auth()::user()->id_usuario,
+        ]);
 
+        return redirect('socios.autogestion');
     }
 }
