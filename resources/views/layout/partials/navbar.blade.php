@@ -19,6 +19,9 @@
 					<li class="nav-item">
 						<a class="nav-link" href="/canchas/">Canchas</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link" href={{null === Auth::user()->socio ? "/membresia/unirse" : "/membresia/autogestion"}}>Membresía</a>
+					</li>
 					@if(Auth::user()->perfil->Perfil_descripcion !== "usuario")
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" role=button data-bs-toggle="dropdown" href="!#"> Reportes</a>
