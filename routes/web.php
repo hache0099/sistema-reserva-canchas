@@ -19,6 +19,7 @@ use App\Http\Controllers\MetodoPagoController;
 use App\Http\Controllers\TipoDomicilioController;
 use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\SocioController;
+use App\Http\Controllers\EmpleadoController;
 use App\Models\TipoContacto;
 use App\Models\TipoDocumento;
 
@@ -53,8 +54,8 @@ Route::middleware(['auth'])->group(function() {
 		->name('reserva.getHorasDisponibles');
 	Route::resource('reserva',ReservaController::class);
 
-	Route::get('/membresia/unirse', [SocioController::class, 'mostrarUnirse'])->name('membresia.unirse');
-    Route::post('/membresia/unirse', [SocioController::class, 'procesarUnirse']);
+	Route::get('/membresia/unirse', [SocioController::class, 'mostrarUnirse']);
+    Route::post('/membresia/unirse', [SocioController::class, 'procesarUnirse'])->name('membresia.unirse');
     Route::get('/membresia/autogestion', [SocioController::class, 'mostrarAutogestion'])->name('membresia.autogestion');
 	// Route::middleware(['check.access'])->group(function(){
 		Route::get('/gestion',[GestionController::class,'show']);
@@ -69,6 +70,7 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('/reservas',[ReservaController::class,'gestionIndex']);
 			Route::get('/reservas/buscar',[ReservaController::class,'buscarReservas'])->name('gestion.reservas.buscar');
 
+			Route::get('/empleados/', [EmpleadoController::class,'index']);
 
 			Route::get('/usuarios', [UserController::class,'index']);
 			Route::get('/usuarios/{id}/editar', [ProfileController::class,'edit']);
