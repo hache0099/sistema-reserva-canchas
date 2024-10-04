@@ -23,6 +23,8 @@ use App\Http\Controllers\EmpleadoController;
 use App\Models\TipoContacto;
 use App\Models\TipoDocumento;
 
+use App\Livewire\ReservaForm;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,7 +54,10 @@ Route::middleware(['auth'])->group(function() {
     	'obtenerHorasDisponibles'
     	])
 		->name('reserva.getHorasDisponibles');
+	
 	Route::resource('reserva',ReservaController::class);
+
+	Route::get('/crearReserva', ReservaForm::class);
 
 	Route::get('/membresia/unirse', [SocioController::class, 'mostrarUnirse']);
     Route::post('/membresia/unirse', [SocioController::class, 'procesarUnirse'])->name('membresia.unirse');
