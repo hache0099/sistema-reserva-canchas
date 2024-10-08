@@ -24,7 +24,7 @@ use App\Models\TipoContacto;
 use App\Models\TipoDocumento;
 
 use App\Livewire\ReservaForm;
-
+use App\Livewire\IngresoEgresoComponent;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,6 +74,8 @@ Route::middleware(['auth'])->group(function() {
 
 			Route::get('/reservas',[ReservaController::class,'gestionIndex']);
 			Route::get('/reservas/buscar',[ReservaController::class,'buscarReservas'])->name('gestion.reservas.buscar');
+
+			Route::get('/ingreso-egreso', IngresoEgresoComponent::class);
 
 			Route::get('/empleados/', [EmpleadoController::class,'index']);
 
