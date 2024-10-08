@@ -27,7 +27,7 @@ class Reserva extends Model
 	];
 
 	protected $casts = [
-		'Reserva_fecha' => 'date:Y-m-d',
+		'Reserva_fecha' => 'date:d-m-Y',
 	];
     
 	function user()
@@ -63,6 +63,11 @@ class Reserva extends Model
 	function porcentajesena()
 	{
 		return $this->belongsTo(PorcentajeSena::class, 'rela_PorcentajeSena');
+	}
+
+	function getFecha()
+	{
+		return $this->Reserva_fecha->format('d-m-Y');
 	}
 	
 }
