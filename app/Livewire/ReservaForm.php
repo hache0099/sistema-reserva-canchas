@@ -29,6 +29,10 @@ class ReservaForm extends Component
     #[Validate('required|int')]
     public $horaElegida;
 
+    public $usuarioCreado;
+
+    protected $listeners = ['usuarioCreado'];
+
     function mount()
     {
         $this->test = '';
@@ -38,6 +42,11 @@ class ReservaForm extends Component
         $this->horarios = collect([]);
     }
 
+
+    public function usuarioCreado($id)
+    {
+        $this->usuarioCreadoId = $id;
+    }
 
     function buscarHorarios()
     {
