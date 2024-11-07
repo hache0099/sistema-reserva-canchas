@@ -33,11 +33,6 @@ class Socio extends Model
 	   return $this->belongsTo(EstadoMembresia::class,"rela_EstadoMembresia");
 	}
 
-	function preciomembresia()
-	{
-		return $this->hasMany(PrecioMembresia::class,"rela_socio");
-	}
-
 	function precioActual()
 	{
 		return $this->hasOne(PrecioMembresia::class,"rela_socio")->latest('fecha_desde');
