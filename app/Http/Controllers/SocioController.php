@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Socio;
 use App\Models\PrecioMembresia;
+use App\Models\MembresiaMes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SocioController extends Controller
 {
@@ -54,6 +56,39 @@ class SocioController extends Controller
     {
 
     }
+
+    function nuevoSocio()
+    {
+        // Obtener usuarios que no son socios (que no existen en la tabla Socio)
+        $usuariosNoSocios = User::doesntHave('socio')->get();
+
+        return view('gestion.socios.nuevo-socio', compact('usuariosNoSocios'));
+    }
+
+    public function hacerSocio($id)
+    {
+        // Obtener el usuario por ID
+        $usuario = User::findOrFail($id);
+
+        // Crear una nueva entrada en la tabla Socio
+        $nuevoSocio = Socio::create([
+            'rela_usuario' => $usuario->id_usuario,
+            'Socio_fecha_alta' => now()->format('Y-m-d'),
+        ]);
+
+        // Crear un pago pendiente en la tabla MembresiaMes
+        MembresiaMes::create([
+            'rela_socio' => $nuevoSocio->id_socio,
+            'monto_a_pagar' => 5000,
+            'mes' => now()->format('m'),
+            'anio' => now()->format('Y'),
+            'rela_PrecioMembresia' => 1,
+        ]);
+
+        // Redireccionar de nuevo a la lista con un mensaje de éxito
+        return redirect('/gestion/socios')->with('success', 'Usuario hecho socio exitosamente.');
+    }
+
 
     function store(Request $request)
     {
