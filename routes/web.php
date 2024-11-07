@@ -25,6 +25,10 @@ use App\Models\TipoDocumento;
 
 use App\Livewire\ReservaForm;
 use App\Livewire\IngresoEgresoComponent;
+use App\Livewire\Gestion\SociosComponent;
+use App\Livewire\PagosMembresia;
+use App\Livewire\EmpleadosComponent;
+use App\Livewire\NuevoEmpleadoComponent;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,15 +73,21 @@ Route::middleware(['auth'])->group(function() {
 			Route::get('/perfiles/{id}/editar',[PerfilController::class,'edit']);
 			Route::post('/perfiles/{id}/update',[PerfilController::class,'update']);
 
-			Route::get('/socios', [SocioController::class, 'index'])->name('gestion.socios');
-			Route::get('/socios/{id}', [SocioController::class, 'verSocio'])->name('gestion.socios.ver');
+			Route::get('/socios', SociosComponent::class)->name('gestion.socios');
+			Route::get('/socios/new', [SocioController::class,'nuevoSocio']);
+			Route::post('/socios/new/{id}', [SocioController::class,'hacerSocio'])->name('socio.hacerSocio');
+			Route::get('/socios/{socioId}/pagos-membresia',PagosMembresia::class)->name('pagos.pendientes');
 
 			Route::get('/reservas',[ReservaController::class,'gestionIndex']);
 			Route::get('/reservas/buscar',[ReservaController::class,'buscarReservas'])->name('gestion.reservas.buscar');
 
 			Route::get('/ingreso-egreso', IngresoEgresoComponent::class);
 
-			Route::get('/empleados/', [EmpleadoController::class,'index']);
+			Route::get('/empleados/', EmpleadosComponent::class);	
+			Route::get('/empleados/create', NuevoEmpleadoComponent::class);
+
+			Route::get('/usuarios/obtenerUsuarioPorDNI', [UserController::class, 'obtenerUsuarioPorDNI']);
+			Route::get('/usuarios/obtenerUsuarioPorEmail', [UserController::class, 'obtenerUsuarioPorEmail']);
 
 			Route::get('/usuarios', [UserController::class,'index']);
 			Route::get('/usuarios/{id}/editar', [ProfileController::class,'edit']);
