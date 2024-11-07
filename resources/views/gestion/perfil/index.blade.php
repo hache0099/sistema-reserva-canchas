@@ -13,6 +13,9 @@
             </h2>
         <div id="collapse{{$p->idPerfil}}" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
+                <div class="mb-1">
+                <a role=button class='btn btn-primary' href='/gestion/perfiles/{{$p->idPerfil}}/editar'>Editar</a>
+                </div>
                 Modulos:
                 <ul>
                 @foreach($p->perfilmodulo as $pm)
