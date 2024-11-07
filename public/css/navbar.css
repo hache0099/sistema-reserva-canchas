@@ -1,0 +1,13 @@
+#mainNav {
+  background-color: #000f08;
+  color: white;
+}
+
+#mainNav .nav-link,
+#mainNav .nav-brand{
+  color: white;
+}
+
+body {
+  background-color: #88b944;
+}
