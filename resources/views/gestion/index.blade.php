@@ -7,6 +7,7 @@
     <!-- Iterar sobre los módulos para generar las cartas -->
     <div class="row">
         @foreach($modulos as $modulo)
+            @if($modulo->Modulo_descripcion !== "Gestion Indice")
             <div class="col-md-4 mb-4">
                 <div class="card">
                  <a href="{{ rtrim($modulo->Modulo_ruta, '*') }}" class="card-block stretched-link">
@@ -19,6 +20,7 @@
                 </a>
                 </div>
             </div>
+            @endif
         @endforeach
     </div>
 </div>
