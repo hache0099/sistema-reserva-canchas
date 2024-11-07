@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+@extends('layout.loginlayout')
 @section('title','ingrese su email')
 
 @section('content')
