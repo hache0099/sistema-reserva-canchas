@@ -46,8 +46,9 @@
                 <tr>
                     <td colspan="7">
                         <!-- Mostrar eventos de ingreso/egreso -->
+                        <h5>Eventos registrados:</h5>
                         <ul>
-                            @foreach($ingresoEgreso as $evento)
+                            @foreach($eventosPorReserva[$reserva->id_reserva] ?? [] as $evento)
                                 <li>{{ $evento->tipo_evento }} registrado en {{ $evento->fecha_hora }}</li>
                             @endforeach
                         </ul>
