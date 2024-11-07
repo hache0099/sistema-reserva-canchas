@@ -1,7 +1,9 @@
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav id="mainNav" class="navbar navbar-custom navbar-expand-lg">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="/home">AlquilerCanchas</a>
+			<a class="navbar-brand" href="/home">
+				<img src={{asset('img/logo.png')}} alt="Logo" width="160" height="75" class="d-inline-block align-text-top">
+			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -19,16 +21,18 @@
 					<li class="nav-item">
 						<a class="nav-link" href="/canchas/">Canchas</a>
 					</li>
+					@if(Auth::user()->perfil->Perfil_descripcion === "usuario")
 					<li class="nav-item">
 						<a class="nav-link" href={{null === Auth::user()->socio ? "/membresia/unirse" : "/membresia/autogestion"}}>Membresía</a>
 					</li>
+					@endif
 					@if(Auth::user()->perfil->Perfil_descripcion !== "usuario")
-					<li class="nav-item dropdown">
+					<!--li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" role=button data-bs-toggle="dropdown" href="!#"> Reportes</a>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="/Proyecto/reporte/horas-mas-res.php">Horas mas reservadas</a></li>
 						</ul>
-					</li>
+					</li-->
 					<li class="nav-item">
 						<a class="nav-link" href='/gestion/'>Gestión</a>
 					</li>
