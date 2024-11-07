@@ -20,7 +20,7 @@
             <select class='form-select' name='perfil' required>
                 <option selected>Elija un perfil</option>
                 @foreach($perfiles as $perfil)
-                    <option value={{$perfil->idPerfil}} {{old('perfil') === $perfil->idPerfil ? 'selected' : ''}}>{{$perfil->Perfil_descripcion}}</option>
+                    <option value={{$perfil->idPerfil}} {{old('perfil') == $perfil->idPerfil || request('perfilACrear') == $perfil->idPerfil ? 'selected' : ''}}>{{$perfil->Perfil_descripcion}}</option>
                 @endforeach
             </select>
             
@@ -90,4 +90,91 @@
     </div>
 </div>
 @endsection
+@section('custom-scripts')
+<script>
+$(document).ready(function () {
+    // Función para mostrar mensajes de error
+    function showError(element, message) {
+        console.log("asdf")
+        $(element).addClass('is-invalid');  // Añadir clase de error
+        $(element).next('.error-message').remove();  // Eliminar cualquier mensaje de error anterior
+        $(element).after('<span class="error-message text-danger">' + message + '</span>');  // Mostrar el nuevo mensaje de error
+    }
 
+    // Función para remover mensajes de error
+    function removeError(element) {
+        $(element).removeClass('is-invalid');
+        $(element).next('.error-message').remove();
+    }
+
+    // Validación de DNI al perder foco
+    $('#dni').blur(function () {
+        var dni = $(this).val();
+        if (dni) {
+            // Realizar la petición AJAX para verificar si el DNI ya está registrado
+            $.ajax({
+                url: '/gestion/usuarios/obtenerUsuarioPorDNI',
+                method: 'get',
+                data: {
+                    _token: '{{ csrf_token() }}',  // Añadir el token CSRF
+                    dni: dni
+                },
+                dataType:"json",
+                success: function (data) {
+                    if (data.resultado === true) {
+                        showError('#dni', 'Este DNI ya está registrado.');
+                    } else {
+                        removeError('#dni');
+                    }
+                },
+                error: function () {
+                    showError('#dni', 'Error al verificar el DNI.');
+                }
+            });
+        } else {
+            showError('#dni', 'El campo DNI es obligatorio.');
+        }
+    });
+
+    // Validación de Email al perder foco
+    $('#email').blur(function () {
+        var email = $(this).val();
+        if (email) {
+            // Realizar la petición AJAX para verificar si el Email ya está registrado
+            $.ajax({
+                url: '/gestion/usuarios/obtenerUsuarioPorEmail',
+                method: 'get',
+                data: {
+                    _token: '{{ csrf_token() }}',  // Añadir el token CSRF
+                    email: email
+                },
+                dataType:"json",
+                success: function (data) {
+                    if (data.resultado === true) {
+                        showError('#email', 'Este correo electrónico ya está registrado.');
+                    } else {
+                        removeError('#email');
+                    }
+                },
+                error: function () {
+                    showError('#email', 'Error al verificar el correo electrónico.');
+                }
+            });
+        } else {
+            showError('#email', 'El campo Correo electrónico es obligatorio.');
+        }
+    });
+
+    // Validación general al desenfocar otros campos
+    $('#name, #apellido, #telefono').blur(function () {
+        var value = $(this).val();
+        if (!value) {
+            showError(this, 'Este campo es obligatorio.');
+        } else {
+            removeError(this);
+        }
+    });
+});
+</script>
+
+@endsection
