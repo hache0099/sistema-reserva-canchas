@@ -11,6 +11,7 @@ use App\Models\TipoContacto;
 use App\Models\PersonaDocumento;
 use App\Models\PersonaContacto;
 use App\Models\Perfil;
+use App\Models\Empleado;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -62,16 +63,58 @@ class UserController extends Controller
         return view('gestion.users.index', ['usuarios' => $usuarios]);
     }
 
+
+    function obtenerUsuarioPorEmail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        
+        if($user !== null)
+        {
+            echo json_encode([
+            'resultado' => true,
+            'user' => $user
+            ]);
+            return;
+        }
+
+        echo json_encode(['resultado' => false]);
+    }
+
+    function obtenerUsuarioPorDNI(Request $request)
+    {
+        $user = PersonaDocumento::where('PersonaDocumento_desc', $request->dni)
+            ->first()
+            ;
+        
+        if($user)
+        {
+            $newUser = $user->persona;
+            echo json_encode([
+            'resultado' => true,
+            'user' => $newUser,
+            ]);
+            return;
+        }
+
+        echo json_encode(['resultado' => false]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
         $tiposDocumento = TipoDocumento::all();
         $perfiles = Perfil::all();
+        $perfilACrear = null;
+        
+        if(isset($request->perfilACrear))
+        {
+            $perfilACrear = $request->perfilACrear;
+        }
 
-        return view('gestion.users.create', compact('tiposDocumento', 'perfiles'));
+        return view('gestion.users.create', compact('tiposDocumento', 'perfiles', 'perfilACrear'));
     }
 
     /**
@@ -85,8 +128,8 @@ class UserController extends Controller
             'dni' => 'required|numeric',
             'perfil' => 'required|numeric|min:1',
             'telefono' => 'required|numeric',
-            'name' => 'string',
-            'apellido' => 'string',
+            'name' => 'nullable|string',
+            'apellido' => 'nullable|string',
         ]);
 
         $userExists = User::where('email', $request->email)->exists();
@@ -130,7 +173,20 @@ class UserController extends Controller
 				'rela_perfil' => $request->perfil,
 				'fecha_alta' => now()->format('Y-m-d'),
 			]);
+
+            if($request->perfil == Perfil::where(Perfil_descripcion, 'empleado')->idPerfil)
+            {
+                Empleado::create([
+                    'codigo_legajo' => $user->id_usuario,
+                    'fecha_alta_empleado' => now()->format('Y-m-d'),
+                    'rela_usuario' => $user->id_usuario,
+                ]);
+            }
+			
 			DB::commit();
+
+            
+			
 			return redirect('/gestion/usuarios')->with('status', 'se ha creado el usuario con éxito');
         } catch (Throwable $e){
             DB::rollBack();
