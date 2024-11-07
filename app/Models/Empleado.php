@@ -15,6 +15,7 @@ class Empleado extends Model
     protected $fillable = [
         'codigo_legajo',
         'fecha_alta_empleado',
+        'fecha_baja_empleado',
         'rela_usuario',
     ];
 
