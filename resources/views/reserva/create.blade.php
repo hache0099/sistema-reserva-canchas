@@ -3,18 +3,20 @@
  <div class="container my-4">
         <h1>Crear Nueva Reserva</h1>
          @if ($errors->any())
+         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
+        </div>
         @endif
 
         <form action={{route("reserva.store")}} method="post">
             @csrf
 
            @if($user_perfil !== "usuario")
-            <div class="form-group">
+            <div class="form-group" >
                 <label for="dni">DNI del usuario</label>
                 <input class="form-control" id="dni" type="number" name="dni">
             </div>
@@ -33,7 +35,7 @@
             <!-- Selección de la fecha -->
             <div class="form-group">
                 <label for="fecha">Fecha de Reserva:</label>
-                <input type="date" class="form-control" id="fecha" name="fecha" required>
+                <input type="date" class="form-control" id="fecha" name="fecha" min="{{now()->format('Y-m-d')}}" required>
             </div>
 
             <!-- Checkboxes de las horas disponibles -->
@@ -52,4 +54,24 @@
 
 @section('custom-scripts')
 <script src={{asset('js/obtenerHorasDisponibles.js')}}></script>
+
+<script>
+$('#dni').on('blur',function(){
+     $('#dni').parent().children('span').remove();
+     $.ajax({
+        url:"/gestion/usuarios/obtenerUsuarioPorDNI",
+        method:'get',
+        data: {dni: $(this).val()},
+        dataType: "json",
+        success: function(data){
+            console.log(data);
+            if(data.resultado){
+                $('#dni').parent().append($("<span>",{text: "Usuario: " + data.user.Nombre + " " + data.user.Apellido}));
+            } else {
+                $('#dni').parent().append($("<span>",{text: "No se ha encontrado el usuario"}));
+            }
+        }
+     });
+})
+</script>
 @endsection

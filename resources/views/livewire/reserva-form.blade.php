@@ -15,7 +15,7 @@
                     <span class="d-block mt-2">Nombre: {{$usuario->persona->Nombre}} {{$usuario->persona->Apellido}}</span>
                     <span class="d-block">ID Usuario: {{$usuario->persona->usuario->id_usuario}}</span>
                 @else
-                    <livewire:registrar-usuario-form perfil="usuario" />
+                    <p>El usuario no existe. <a href><strong>Crealo ahora</strong></a>
                 @endif
             </div>
         @endif
