@@ -67,6 +67,13 @@ class ReservaController extends Controller
             }
 
             $usuario = PersonaDocumento::where('PersonaDocumento_desc',$request->dni)
+                ->first();
+            
+            if($usuario === null){
+                return back()->withErrors('El DNI no está registrado');
+            }
+
+            $usuario = PersonaDocumento::where('PersonaDocumento_desc',$request->dni)
                 ->first()
                 ->persona
                 ->usuario;
